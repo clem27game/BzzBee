@@ -1,5 +1,7 @@
 
-# BzzBee v2.0 - Le Langage des Abeilles 🐝
+# BzzBee - Le Langage des Abeilles 🐝
+
+   ![BzzBee](http://www.image-heberg.fr/files/17510255233353626735.png)
 
 BzzBee est un langage de programmation simple et amusant inspiré de la communication des abeilles! Cette version 2.0 apporte de nombreuses améliorations et nouvelles fonctionnalités.
 
