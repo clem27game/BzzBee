@@ -1,7 +1,7 @@
 
-# BzzBee - Le Langage des Abeilles 🐝
+# BzzBee v2.0 - Le Langage des Abeilles 🐝
 
-BzzBee est un langage de programmation simple et amusant inspiré de la communication des abeilles!
+BzzBee est un langage de programmation simple et amusant inspiré de la communication des abeilles! Cette version 2.0 apporte de nombreuses améliorations et nouvelles fonctionnalités.
 
 ## Installation et Utilisation
 
@@ -16,42 +16,80 @@ make
 ./main
 ```
 
+## Nouvelles Fonctionnalités v2.0
+
+✅ **Calculs mathématiques avancés** avec support des parenthèses, puissance, modulo  
+✅ **Conditions étendues** avec SINON et opérateurs de comparaison  
+✅ **Boucles POUR** avec variables d'itération  
+✅ **Gestion des chaînes** avec guillemets  
+✅ **Variables numériques** avec support des décimales  
+✅ **Lecture interactive** avec bzz LIRE  
+✅ **Gestion d'erreurs améliorée**  
+
 ## Syntaxe BzzBee
 
 ### Affichage dans la console
 ```
-bzz R console -> Hello World
+bzz R console -> "Hello World"
+bzz R console -> Message sans guillemets
 ```
 
 ### Affichage avec couleurs
 ```
-bzz R couleur rouge -> Texte en rouge
-bzz R couleur vert -> Texte en vert
-bzz R couleur jaune -> Texte en jaune
-bzz R couleur bleu -> Texte en bleu
+bzz R couleur rouge -> "Texte en rouge"
+bzz R couleur vert -> "Texte en vert"
+bzz R couleur jaune -> "Texte en jaune"
+bzz R couleur bleu -> "Texte en bleu"
+bzz R couleur magenta -> "Texte en magenta"
+bzz R couleur cyan -> "Texte en cyan"
 ```
 
 ### Variables
 ```
-bzz STOCK nom -> Alice
+bzz STOCK nom -> "Alice"
 bzz STOCK age -> 25
+bzz STOCK pi -> 3.14159
 bzz MONTRE nom
+bzz LIRE nouvelle_variable
 ```
 
-### Mathématiques
+### Mathématiques Avancées
 ```
-bzz CALCUL 10 + 5 * 2
-bzz CALCUL 20 - 3
+bzz CALCUL 10 + 5 * 2        # Addition et multiplication
+bzz CALCUL 2 ^ 3             # Puissance (8)
+bzz CALCUL 15 % 4            # Modulo (3)
+bzz CALCUL (10 + 5) * 2      # Parenthèses (30)
+bzz CALCUL age + 5           # Utilisation de variables
 ```
 
-### Conditions
+### Conditions Étendues
 ```
-bzz SI nom == Alice ALORS
+bzz SI age > 18 ALORS
+bzz R console -> "Majeur"
+bzz FIN
+
+bzz SI nom == "Alice" ALORS
+bzz R console -> "Bonjour Alice!"
+bzz SINON
+bzz R console -> "Bonjour inconnu!"
+bzz FIN
+```
+
+**Opérateurs supportés:** `==`, `!=`, `>`, `<`, `>=`, `<=`
+
+### Boucles
+```
+bzz POUR i DE 1 A 10
+bzz R console -> "Comptage:"
+bzz MONTRE i
+bzz CALCUL i * 2
+bzz SUIVANT
 ```
 
 ### Quiz interactif
 ```
-bzz QUIZ Quelle est la couleur du miel? -> jaune
+bzz QUIZ "Quelle est la couleur du miel?" -> "jaune"
+bzz QUIZ "Combien font 2 + 2?" -> "4"
 ```
 
 ### Dessins ASCII
@@ -59,25 +97,63 @@ bzz QUIZ Quelle est la couleur du miel? -> jaune
 bzz DESSINE abeille
 bzz DESSINE ruche
 bzz DESSINE fleur
+bzz DESSINE hexagone
 ```
 
-### Délais
+### Délais et Contrôle
 ```
-bzz DORT 1000    # Pause de 1000ms
-```
-
-### Salutations
-```
-bzz BONJOUR      # Message de bienvenue
-bzz AU REVOIR    # Quitter le programme
+bzz DORT 1000          # Pause de 1000ms
+bzz BONJOUR           # Message de bienvenue
+bzz AU REVOIR         # Quitter le programme
 ```
 
-## Exemples
+### Commentaires
+```
+# Ceci est un commentaire
+bzz R console -> "Code" # Commentaire en fin de ligne
+```
 
-Voir le fichier `exemple.bzz` pour un programme complet!
+## Exemples de Programmes
+
+### Programme de Calcul
+```bzz
+bzz BONJOUR
+bzz LIRE nombre1
+bzz LIRE nombre2
+bzz CALCUL nombre1 + nombre2
+bzz AU REVOIR
+```
+
+### Compteur avec Boucle
+```bzz
+bzz POUR compteur DE 1 A 5
+bzz R couleur vert -> "Comptage:"
+bzz MONTRE compteur
+bzz DORT 500
+bzz SUIVANT
+```
+
+### Quiz Mathématique
+```bzz
+bzz R couleur jaune -> "Quiz Mathématique"
+bzz QUIZ "Combien font 5 * 3?" -> "15"
+bzz QUIZ "Quelle est la racine de 16?" -> "4"
+bzz R couleur vert -> "Quiz terminé!"
+```
 
 ## Extensions de fichier
 
 Les programmes BzzBee utilisent l'extension `.bzz`
 
-Bzzzz! Amusez-vous bien avec BzzBee! 🐝🍯
+## Améliorations v2.0
+
+- **Expressions mathématiques complexes** avec parenthèses
+- **Support des nombres décimaux**
+- **Conditions avec SINON**
+- **Boucles POUR automatiques**
+- **Meilleure gestion des erreurs**
+- **Variables dans les calculs**
+- **Lecture interactive de l'utilisateur**
+- **Support des guillemets pour les chaînes**
+
+Bzzzz! Amusez-vous bien avec BzzBee v2.0! 🐝🍯✨

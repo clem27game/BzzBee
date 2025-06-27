@@ -1,34 +1,55 @@
 
-# Programme d'exemple BzzBee
-# Les abeilles communiquent!
+# Programme d'exemple BzzBee v2.0
+# Les abeilles communiquent mieux maintenant!
 
 bzz BONJOUR
 
-bzz R console -> Bienvenue dans BzzBee!
+bzz R console -> "Bienvenue dans BzzBee 2.0!"
 
-bzz R couleur jaune -> Les abeilles adorent le jaune!
-
-bzz STOCK nom -> Alice
+bzz R couleur jaune -> "=== Test des Variables ==="
+bzz STOCK nom -> "Alice"
 bzz STOCK age -> 25
+bzz STOCK pi -> 3.14159
 
-bzz R console -> Voici les informations stockées:
+bzz R console -> "Informations stockées:"
 bzz MONTRE nom
 bzz MONTRE age
+bzz MONTRE pi
 
+bzz R couleur vert -> "=== Test des Calculs Avancés ==="
 bzz CALCUL 10 + 5 * 2
+bzz CALCUL 2 ^ 3
+bzz CALCUL 15 % 4
+bzz CALCUL (10 + 5) * 2
 
-bzz R couleur vert -> Voici une belle abeille:
+bzz R couleur cyan -> "=== Test des Conditions ==="
+bzz SI age > 18 ALORS
+bzz R console -> "Alice est majeure!"
+bzz FIN
+
+bzz SI nom == "Bob" ALORS
+bzz R console -> "Bonjour Bob!"
+bzz SINON
+bzz R console -> "Tu n'es pas Bob!"
+bzz FIN
+
+bzz R couleur magenta -> "=== Test des Boucles ==="
+bzz POUR i DE 1 A 5
+bzz R console -> "Iteration:"
+bzz MONTRE i
+bzz SUIVANT
+
+bzz R couleur bleu -> "=== Test des Dessins ASCII ==="
 bzz DESSINE abeille
-
-bzz R couleur bleu -> Et voici sa ruche:
 bzz DESSINE ruche
+bzz DESSINE hexagone
 
-bzz SI nom == Alice ALORS
+bzz R couleur jaune -> "=== Test Interactif ==="
+bzz QUIZ "Combien font 2 + 2?" -> "4"
 
-bzz QUIZ Quelle est la couleur préférée des abeilles? -> jaune
-
-bzz R console -> L'abeille va maintenant se reposer...
+bzz R couleur rouge -> "=== Fin du Programme ==="
+bzz R console -> "L'abeille va maintenant se reposer..."
 bzz DORT 1000
 
-bzz R couleur rouge -> Programme terminé!
+bzz R couleur vert -> "Programme BzzBee terminé avec succès!"
 bzz AU REVOIR
