@@ -12,10 +12,10 @@ BzzBee est un langage de programmation simple et amusant inspiré de la communic
 make
 
 # Exécuter un fichier .bzz
-./main run fichier.bzz
+./BzzBee/main run fichier.bzz
 
 # Mode interactif
-./main
+./BzzBee/main
 ```
 
 ## 🆕 Nouvelles Fonctionnalités v3.0
@@ -23,7 +23,7 @@ make
 ✅ **Tableaux et listes** pour stocker plusieurs valeurs  
 ✅ **Fonctions mathématiques avancées** (sin, cos, sqrt)  
 ✅ **Génération de nombres aléatoires**  
-✅ **Système de musique** avec notes et mélodies  
+✅ **Système de musique** avec notes et mélodies (console-based sans le vrai son, juste la fréquence)
 ✅ **Canvas graphique** pour dessiner en ASCII  
 ✅ **Nouvelles formes ASCII** (soleil, nuage, cœur)  
 ✅ **Utilitaires système** (temps, effacement d'écran)  
