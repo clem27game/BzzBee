@@ -1,55 +1,83 @@
 
-# Programme d'exemple BzzBee v2.0
-# Les abeilles communiquent mieux maintenant!
+# Programme d'exemple BzzBee v3.0 - Édition Avancée!
+# Les abeilles peuvent maintenant faire bien plus!
 
 bzz BONJOUR
 
-bzz R console -> "Bienvenue dans BzzBee 2.0!"
+bzz R couleur jaune -> "=== BIENVENUE DANS BZZBEE 3.0! ==="
 
-bzz R couleur jaune -> "=== Test des Variables ==="
-bzz STOCK nom -> "Alice"
-bzz STOCK age -> 25
-bzz STOCK pi -> 3.14159
+# Test des nouvelles fonctionnalités mathématiques avancées
+bzz R couleur cyan -> "=== Mathématiques Avancées ==="
+bzz CALCUL sin(30)
+bzz CALCUL cos(60)
+bzz CALCUL sqrt(16)
+bzz CALCUL 2 ^ (3 + 1)
 
-bzz R console -> "Informations stockées:"
-bzz MONTRE nom
-bzz MONTRE age
-bzz MONTRE pi
+# Test des tableaux
+bzz R couleur vert -> "=== Tableaux et Listes ==="
+bzz TABLEAU nombres -> "1,2,3,4,5"
+bzz TABLEAU notes -> "7.5,8.2,9.1,6.8"
+bzz MONTRE nombres
+bzz MONTRE notes
 
-bzz R couleur vert -> "=== Test des Calculs Avancés ==="
-bzz CALCUL 10 + 5 * 2
-bzz CALCUL 2 ^ 3
-bzz CALCUL 15 % 4
-bzz CALCUL (10 + 5) * 2
+# Test des nombres aléatoires
+bzz R couleur magenta -> "=== Génération Aléatoire ==="
+bzz HASARD 1 100
+bzz HASARD 10 50
+bzz HASARD 1 6
 
-bzz R couleur cyan -> "=== Test des Conditions ==="
-bzz SI age > 18 ALORS
-bzz R console -> "Alice est majeure!"
-bzz FIN
+# Test de la musique
+bzz R couleur bleu -> "=== Musique des Abeilles ==="
+bzz MUSIQUE do 500
+bzz MUSIQUE re 500
+bzz MUSIQUE mi 500
+bzz MUSIQUE fa 500
+bzz MUSIQUE sol 500
 
-bzz SI nom == "Bob" ALORS
-bzz R console -> "Bonjour Bob!"
-bzz SINON
-bzz R console -> "Tu n'es pas Bob!"
-bzz FIN
+# Test du canvas et du dessin
+bzz R couleur rouge -> "=== Canvas Artistique ==="
+bzz TOILE INIT
+bzz PIXEL 5 5 *
+bzz PIXEL 10 10 @
+bzz PIXEL 15 8 #
+bzz TEXTE 2 2 "BZZBEE"
+bzz LIGNE 0 0 20 10 -
+bzz LIGNE 0 10 20 0 +
+bzz TOILE MONTRE
 
-bzz R couleur magenta -> "=== Test des Boucles ==="
-bzz POUR i DE 1 A 5
-bzz R console -> "Iteration:"
-bzz MONTRE i
+# Test des nouvelles formes ASCII
+bzz R couleur jaune -> "=== Nouvelles Formes ASCII ==="
+bzz DESSINE soleil
+bzz DESSINE nuage
+bzz DESSINE coeur
+
+# Test du temps et des utilitaires
+bzz R couleur cyan -> "=== Utilitaires Système ==="
+bzz TEMPS
+
+# Variables et calculs avancés
+bzz R couleur vert -> "=== Variables et Expressions ==="
+bzz STOCK angle -> 45
+bzz CALCUL sin(angle)
+bzz CALCUL cos(angle)
+
+# Boucle avec nouvelles fonctionnalités
+bzz R couleur magenta -> "=== Boucle Créative ==="
+bzz POUR compteur DE 1 A 3
+bzz R console -> "Itération:"
+bzz MONTRE compteur
+bzz HASARD 1 10
+bzz MUSIQUE la 200
 bzz SUIVANT
 
-bzz R couleur bleu -> "=== Test des Dessins ASCII ==="
-bzz DESSINE abeille
-bzz DESSINE ruche
-bzz DESSINE hexagone
+# Test interactif amélioré
+bzz R couleur bleu -> "=== Test Interactif ==="
+bzz QUIZ "Combien font sin(90)?" -> "1"
 
-bzz R couleur jaune -> "=== Test Interactif ==="
-bzz QUIZ "Combien font 2 + 2?" -> "4"
+# Effacement et fin créative
+bzz R couleur rouge -> "=== Finalisation ==="
+bzz R console -> "Programme BzzBee 3.0 terminé!"
+bzz DORT 2000
 
-bzz R couleur rouge -> "=== Fin du Programme ==="
-bzz R console -> "L'abeille va maintenant se reposer..."
-bzz DORT 1000
-
-bzz R couleur vert -> "Programme BzzBee terminé avec succès!"
+bzz R couleur vert -> "Merci d'avoir testé BzzBee 3.0! 🐝🎨🎵"
 bzz AU REVOIR
