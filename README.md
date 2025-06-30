@@ -8,8 +8,6 @@ BzzBee est un langage de programmation simple et amusant inspiré de la communic
 ## Installation et Utilisation
 
 ```bash
-# Compiler l'interpréteur
-make
 
 # Exécuter un fichier .bzz
 ./BzzBee/main run fichier.bzz
@@ -88,7 +86,7 @@ bzz HASARD 1 6             # Simuler un dé
 bzz HASARD 10 50           # Nombre entre 10 et 50
 ```
 
-### Système Musical 🎵
+### Système Musical (pas de vrais sons dans les hauts parleurs, juste un affichage ASCII des fréquences) 🎵
 ```bzz
 # Notes individuelles (durée en millisecondes)
 bzz MUSIQUE do 500

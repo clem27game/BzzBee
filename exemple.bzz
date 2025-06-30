@@ -8,10 +8,10 @@ bzz R couleur jaune -> "=== BIENVENUE DANS BZZBEE 3.0! ==="
 
 # Test des nouvelles fonctionnalités mathématiques avancées
 bzz R couleur cyan -> "=== Mathématiques Avancées ==="
-bzz CALCUL sin(30)
+bzz CALCUL sin(80)
 bzz CALCUL cos(60)
 bzz CALCUL sqrt(16)
-bzz CALCUL 2 ^ (3 + 1)
+bzz CALCUL 4 ^ (5 + 1)
 
 # Test des tableaux
 bzz R couleur vert -> "=== Tableaux et Listes ==="
@@ -22,7 +22,7 @@ bzz MONTRE notes
 
 # Test des nombres aléatoires
 bzz R couleur magenta -> "=== Génération Aléatoire ==="
-bzz HASARD 1 100
+bzz HASARD 400 1000
 bzz HASARD 10 50
 bzz HASARD 1 6
 
