@@ -16,6 +16,26 @@
 #define MAX_FUNCTIONS 20
 #define MAX_ARRAY_SIZE 100
 #define MAX_MUSIC_NOTES 50
+#define MAX_PACKAGES 50
+#define MAX_PACKAGE_FUNCTIONS 100
+
+// Structure pour les packages
+typedef struct {
+    char name[MAX_VAR_NAME];
+    char language[10];
+    char file_path[200];
+    int is_loaded;
+} Package;
+
+// Structure pour les fonctions de packages
+typedef struct {
+    char name[MAX_VAR_NAME];
+    char package_name[MAX_VAR_NAME];
+    char language[10];
+    char file_path[200];
+    char parameters[500];
+    int param_count;
+} PackageFunction;
 
 // Structure pour les variables
 typedef struct {
@@ -50,9 +70,13 @@ typedef struct {
 Variable variables[MAX_VARIABLES];
 Loop loops[MAX_LOOPS];
 Function functions[MAX_FUNCTIONS];
+Package packages[MAX_PACKAGES];
+PackageFunction package_functions[MAX_PACKAGE_FUNCTIONS];
 int var_count = 0;
 int loop_count = 0;
 int function_count = 0;
+int package_count = 0;
+int package_function_count = 0;
 int current_line = 0;
 char program_lines[1000][MAX_LINE_LENGTH];
 int total_lines = 0;
@@ -219,6 +243,126 @@ void play_note(const char* note, int duration) {
 // Fonction pour générer des nombres aléatoires
 int random_number(int min, int max) {
     return min + rand() % (max - min + 1);
+}
+
+// Fonction pour charger un package
+int load_package(const char* language, const char* file_path) {
+    if (package_count >= MAX_PACKAGES) {
+        printf("Erreur: Trop de packages chargés!\n");
+        return 0;
+    }
+    
+    // Vérifier si le fichier existe
+    FILE* file = fopen(file_path, "r");
+    if (!file) {
+        printf("❌ Erreur: Fichier package '%s' introuvable!\n", file_path);
+        return 0;
+    }
+    fclose(file);
+    
+    Package* pkg = &packages[package_count];
+    sprintf(pkg->name, "package_%d", package_count);
+    strcpy(pkg->language, language);
+    strcpy(pkg->file_path, file_path);
+    pkg->is_loaded = 1;
+    
+    package_count++;
+    printf("🐝 Package %s (%s) chargé avec succès!\n", file_path, language);
+    return 1;
+}
+
+// Fonction pour exécuter du code selon le langage
+int execute_package_code(const char* language, const char* file_path, const char* params) {
+    char command[1000];
+    
+    if (strcmp(language, "js") == 0) {
+        sprintf(command, "node %s %s", file_path, params ? params : "");
+    } else if (strcmp(language, "py") == 0) {
+        sprintf(command, "python3 %s %s", file_path, params ? params : "");
+    } else if (strcmp(language, "jl") == 0) {
+        sprintf(command, "julia %s %s", file_path, params ? params : "");
+    } else if (strcmp(language, "rb") == 0 || strcmp(language, "rub") == 0) {
+        sprintf(command, "ruby %s %s", file_path, params ? params : "");
+    } else if (strcmp(language, "c") == 0 || strcmp(language, "C") == 0) {
+        // Compiler et exécuter le C
+        char exe_name[200];
+        sprintf(exe_name, "%s.out", file_path);
+        sprintf(command, "gcc -o %s %s && ./%s %s", exe_name, file_path, exe_name, params ? params : "");
+    } else if (strcmp(language, "bzz") == 0) {
+        // Exécuter un autre fichier BzzBee
+        sprintf(command, "./main run %s", file_path);
+    } else {
+        printf("❌ Langage '%s' non supporté!\n", language);
+        return 0;
+    }
+    
+    printf("🔧 Exécution: %s\n", command);
+    int result = system(command);
+    
+    if (result == 0) {
+        printf("✅ Package exécuté avec succès!\n");
+    } else {
+        printf("❌ Erreur lors de l'exécution du package!\n");
+    }
+    
+    return (result == 0);
+}
+
+// Fonction pour scanner les fonctions dans un package BzzBee
+void scan_bzz_functions(const char* file_path) {
+    FILE* file = fopen(file_path, "r");
+    if (!file) return;
+    
+    char line[MAX_LINE_LENGTH];
+    while (fgets(line, sizeof(line), file)) {
+        line[strcspn(line, "\n")] = 0;
+        
+        // Chercher les fonctions avec le pattern pollen -> ... : miel
+        if (strstr(line, "pollen ->") && strstr(line, ": miel")) {
+            if (package_function_count < MAX_PACKAGE_FUNCTIONS) {
+                PackageFunction* func = &package_functions[package_function_count];
+                sprintf(func->name, "function_%d", package_function_count);
+                strcpy(func->language, "bzz");
+                strcpy(func->file_path, file_path);
+                strcpy(func->parameters, line);
+                package_function_count++;
+                printf("📝 Fonction BzzBee détectée: %s\n", line);
+            }
+        }
+    }
+    fclose(file);
+}
+
+// Fonction pour exécuter une fonction de package
+int execute_package_function(const char* function_call) {
+    // Parser le format pollen -> params : miel
+    char* pollen_start = strstr(function_call, "pollen ->");
+    char* miel_end = strstr(function_call, ": miel");
+    
+    if (!pollen_start || !miel_end) {
+        printf("❌ Format de fonction package incorrect! Utilisez: pollen -> params : miel\n");
+        return 0;
+    }
+    
+    // Extraire les paramètres
+    char params[500];
+    char* param_start = pollen_start + 9; // après "pollen ->"
+    int param_len = miel_end - param_start;
+    strncpy(params, param_start, param_len);
+    params[param_len] = '\0';
+    
+    char* trimmed_params = trim(params);
+    
+    printf("🍯 Exécution de fonction package avec paramètres: %s\n", trimmed_params);
+    
+    // Pour l'instant, on exécute sur le premier package chargé
+    if (package_count > 0) {
+        Package* pkg = &packages[package_count - 1];
+        return execute_package_code(pkg->language, pkg->file_path, trimmed_params);
+    } else {
+        printf("❌ Aucun package chargé!\n");
+        return 0;
+    }
 }
 
 // Fonction pour évaluer une expression mathématique avancée
@@ -743,6 +887,32 @@ int interpret_line(char* line) {
         printf("Temps actuel: %s\n", time_str);
     }
     
+    // bzz PACKAGE langage -> fichier
+    else if (strncmp(line, "bzz PACKAGE", 11) == 0) {
+        char* rest = line + 11;
+        char* arrow = strstr(rest, "->");
+        if (arrow) {
+            *arrow = '\0';
+            char* language = trim(rest);
+            char* file_path = trim(arrow + 2);
+            file_path = remove_quotes(file_path);
+            
+            if (load_package(language, file_path)) {
+                // Si c'est un package BzzBee, scanner les fonctions
+                if (strcmp(language, "bzz") == 0) {
+                    scan_bzz_functions(file_path);
+                }
+            }
+        } else {
+            printf("❌ Format incorrect! Utilisez: bzz PACKAGE langage -> fichier\n");
+        }
+    }
+    
+    // pollen -> paramètres : miel (appel de fonction package)
+    else if (strstr(line, "pollen ->") && strstr(line, ": miel")) {
+        execute_package_function(line);
+    }
+    
     // bzz EFFACE
     else if (strcmp(line, "bzz EFFACE") == 0) {
         system("clear");
@@ -770,10 +940,12 @@ int interpret_line(char* line) {
 int main(int argc, char* argv[]) {
     srand(time(NULL)); // Initialiser le générateur aléatoire
     
-    printf("🐝 BzzBee Interpreter v3.0 - Le langage des abeilles évolué! 🐝\n");
-    printf("Nouvelles fonctionnalités: Tableaux, Canvas, Musique, Math avancées!\n");
+    printf("🐝 BzzBee Interpreter v4.0 - Le langage des abeilles avec packages! 🐝\n");
+    printf("Nouvelles fonctionnalités: Système de packages multi-langages!\n");
+    printf("Langages supportés: node.js, Python, Julia, Ruby, C, BzzBee\n");
     printf("Utilisez 'bzzbee run fichier.bzz' pour exécuter un fichier\n");
-    printf("Ou tapez des commandes directement:\n\n");
+    printf("Créez des packages avec: bzz PACKAGE langage -> fichier\n");
+    printf("Utilisez des fonctions avec: pollen -> paramètres : miel\n\n");
     
     if (argc == 3 && strcmp(argv[1], "run") == 0) {
         FILE* file = fopen(argv[2], "r");

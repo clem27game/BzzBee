@@ -1,0 +1,41 @@
+
+# Exemple d'utilisation du système de packages BzzBee v4.0
+# Démonstration des packages multi-langages
+
+bzz BONJOUR
+bzz R couleur jaune -> "=== DÉMONSTRATION DU SYSTÈME DE PACKAGES BZZBEE ==="
+
+# Chargement des packages
+bzz R couleur cyan -> "=== Chargement des packages ==="
+bzz PACKAGE js -> math_package.js
+bzz PACKAGE py -> string_package.py
+bzz PACKAGE rub -> utils_package.rb
+bzz PACKAGE bzz -> art_package.bzz
+
+bzz R couleur vert -> "=== Test du package Math (Node.js) ==="
+pollen -> addition 10 5 : miel
+pollen -> multiplication 7 8 : miel
+pollen -> factorielle 5 : miel
+
+bzz R couleur bleu -> "=== Test du package String (Python) ==="
+pollen -> majuscule "bonjour les abeilles" : miel
+pollen -> inverse "BzzBee" : miel
+pollen -> longueur "Système de packages" : miel
+
+bzz R couleur magenta -> "=== Test du package Utils (Ruby) ==="
+pollen -> date : miel
+pollen -> hasard 1 50 : miel
+pollen -> fibonacci 8 : miel
+
+bzz R couleur rouge -> "=== Test du package Art (BzzBee natif) ==="
+pollen -> art : miel
+
+# Combinaison avec les fonctionnalités natives
+bzz R couleur cyan -> "=== Combinaison avec BzzBee natif ==="
+bzz STOCK message -> "Les packages BzzBee sont géniaux!"
+bzz MONTRE message
+bzz CALCUL 15 + 25
+bzz DESSINE coeur
+
+bzz R couleur jaune -> "🍯 Démonstration terminée! Le système de packages fonctionne parfaitement!"
+bzz AU REVOIR

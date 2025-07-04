@@ -1,0 +1,32 @@
+
+# Package d'art ASCII en BzzBee natif
+# Convention: pollen -> paramètres : miel
+
+bzz R couleur cyan -> "🎨 Package Art BzzBee - Générateur d'art ASCII"
+
+# Fonction pour dessiner un cadre
+bzz R console -> "=== Dessin de cadre ==="
+bzz TOILE INIT
+bzz LIGNE 5 5 25 5 =
+bzz LIGNE 5 5 5 15 |
+bzz LIGNE 25 5 25 15 |
+bzz LIGNE 5 15 25 15 =
+bzz TEXTE 8 10 "BZZBEE ART"
+bzz TOILE MONTRE
+
+# Fonction pour créer des motifs
+bzz R couleur jaune -> "=== Motif d'abeilles ==="
+bzz DESSINE abeille
+bzz R console -> "  "
+bzz DESSINE abeille
+bzz R console -> "    "
+bzz DESSINE abeille
+
+# Fonction pour créer un paysage
+bzz R couleur vert -> "=== Paysage des abeilles ==="
+bzz DESSINE soleil
+bzz DESSINE nuage
+bzz DESSINE fleur
+bzz DESSINE ruche
+
+bzz R couleur magenta -> "🍯 Package Art terminé avec succès!"
