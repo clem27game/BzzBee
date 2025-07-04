@@ -48,6 +48,33 @@ int main(int argc, char* argv[]) {
     }
     else if (strcmp(operation, "binaire") == 0 && argc >= 3) {
         int nombre = atoi(argv[2]);
+        if (nombre == 0) {
+            printf("🍯 Résultat: 0 en binaire = 0\n");
+        } else {
+            char binaire[33];
+            int index = 0;
+            int temp = abs(nombre);
+            
+            while (temp > 0) {
+                binaire[index++] = (temp % 2) + '0';
+                temp /= 2;
+            }
+            
+            printf("🍯 Résultat: %d en binaire = ", nombre);
+            if (nombre < 0) printf("-");
+            for (int i = index - 1; i >= 0; i--) {
+                printf("%c", binaire[i]);
+            }
+            printf("\n");
+        }
+    }
+    else {
+        printf("❌ Opération non reconnue: %s\n", operation);
+        printf("Fonctions disponibles: puissance, racine, premier, binaire\n");
+    }
+    
+    return 0;
+}ombre = atoi(argv[2]);
         printf("🍯 Résultat: %d en binaire = ", nombre);
         if (nombre == 0) {
             printf("0");

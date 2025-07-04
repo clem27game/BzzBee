@@ -1,4 +1,5 @@
 
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,6 +7,11 @@
 #include <unistd.h>
 #include <math.h>
 #include <time.h>
+#include <sys/wait.h>
+
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 #define MAX_LINE_LENGTH 1000
 #define MAX_VARIABLES 100
@@ -178,14 +184,16 @@ void create_array(const char* name, const char* values) {
     var->is_array = 1;
     var->array_size = 0;
     
-    char* values_copy = strdup(values);
+    char values_copy[500];
+    strncpy(values_copy, values, sizeof(values_copy) - 1);
+    values_copy[sizeof(values_copy) - 1] = '\0';
+    
     char* token = strtok(values_copy, ",");
     while (token && var->array_size < MAX_ARRAY_SIZE) {
         var->array_values[var->array_size] = atof(trim(token));
         var->array_size++;
         token = strtok(NULL, ",");
     }
-    free(values_copy);
     printf("Tableau %s créé avec %d éléments!\n", name, var->array_size);
 }
 
@@ -479,7 +487,10 @@ int execute_package_function(const char* function_call) {
 
 // Fonction pour évaluer une expression mathématique avancée
 double evaluate_expression(const char* expr) {
-    char* expr_copy = strdup(expr);
+    char expr_copy[500];
+    strncpy(expr_copy, expr, sizeof(expr_copy) - 1);
+    expr_copy[sizeof(expr_copy) - 1] = '\0';
+    
     char* saveptr;
     char* token;
     double result = 0;
@@ -507,7 +518,7 @@ double evaluate_expression(const char* expr) {
         if (end) {
             *end = '\0';
             double angle = atof(start + 4);
-            double result_sin = sin(angle * M_PI / 180);
+            double result_sin = sin(angle * M_PI / 180.0);
             sprintf(start, "%.4f", result_sin);
             memmove(start + strlen(start), end + 1, strlen(end + 1) + 1);
         }
@@ -519,7 +530,7 @@ double evaluate_expression(const char* expr) {
         if (end) {
             *end = '\0';
             double angle = atof(start + 4);
-            double result_cos = cos(angle * M_PI / 180);
+            double result_cos = cos(angle * M_PI / 180.0);
             sprintf(start, "%.4f", result_cos);
             memmove(start + strlen(start), end + 1, strlen(end + 1) + 1);
         }
@@ -537,7 +548,7 @@ double evaluate_expression(const char* expr) {
         }
     }
     
-    token = strtok_r(expr_copy, " ", &saveptr);
+    token = strtok(expr_copy, " ");
     while (token != NULL) {
         if (strcmp(token, "+") == 0) {
             operation = '+';
@@ -577,16 +588,16 @@ double evaluate_expression(const char* expr) {
                 }
             }
         }
-        token = strtok_r(NULL, " ", &saveptr);
+        token = strtok(NULL, " ");
     }
-    
-    free(expr_copy);
     return result;
 }
 
 // Fonction pour évaluer une condition
 int evaluate_condition(const char* condition) {
-    char* cond_copy = strdup(condition);
+    char cond_copy[500];
+    strncpy(cond_copy, condition, sizeof(cond_copy) - 1);
+    cond_copy[sizeof(cond_copy) - 1] = '\0';
     char* var_name = strtok(cond_copy, " ");
     char* operator = strtok(NULL, " ");
     char* value = strtok(NULL, " ");
@@ -617,7 +628,6 @@ int evaluate_condition(const char* condition) {
         result = (var->num_value <= atof(value));
     }
     
-    free(cond_copy);
     return result;
 }
 
@@ -822,7 +832,8 @@ int interpret_line(char* line) {
             int x = atoi(x_str);
             int y = atoi(y_str);
             text = remove_quotes(trim(text));
-            for (int i = 0; i < strlen(text) && x + i < canvas_width; i++) {
+            int text_len = strlen(text);
+            for (int i = 0; i < text_len && x + i < canvas_width; i++) {
                 draw_pixel(x + i, y, text[i]);
             }
             printf("Texte '%s' dessiné à (%d,%d)!\n", text, x, y);
@@ -1047,7 +1058,8 @@ int interpret_line(char* line) {
     
     // bzz EFFACE
     else if (strcmp(line, "bzz EFFACE") == 0) {
-        system("clear");
+        int clear_result = system("clear");
+        (void)clear_result; // Ignorer la valeur de retour
         printf("🐝 Écran effacé! Bzzzz! 🐝\n");
     }
     
