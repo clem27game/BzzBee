@@ -1,7 +1,3 @@
-
-// Package de test en C pour BzzBee
-// Convention: pollen -> paramètres : miel
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -16,9 +12,9 @@ int main(int argc, char* argv[]) {
         printf("- binaire nombre\n");
         return 0;
     }
-    
+
     char* operation = argv[1];
-    
+
     if (strcmp(operation, "puissance") == 0 && argc >= 4) {
         double base = atof(argv[2]);
         double exposant = atof(argv[3]);
@@ -54,12 +50,12 @@ int main(int argc, char* argv[]) {
             char binaire[33];
             int index = 0;
             int temp = abs(nombre);
-            
+
             while (temp > 0) {
                 binaire[index++] = (temp % 2) + '0';
                 temp /= 2;
             }
-            
+
             printf("🍯 Résultat: %d en binaire = ", nombre);
             if (nombre < 0) printf("-");
             for (int i = index - 1; i >= 0; i--) {
@@ -68,37 +64,13 @@ int main(int argc, char* argv[]) {
             printf("\n");
         }
     }
-    else {
-        printf("❌ Opération non reconnue: %s\n", operation);
-        printf("Fonctions disponibles: puissance, racine, premier, binaire\n");
-    }
-    
-    return 0;
-}
-nombre = atoi(argv[2]);
-        printf("🍯 Résultat: %d en binaire = ", nombre);
-        if (nombre == 0) {
-            printf("0");
-        } else {
-            char binaire[33];
-            int index = 0;
-            while (nombre > 0) {
-                binaire[index++] = (nombre % 2) ? '1' : '0';
-                nombre /= 2;
-            }
-            for (int i = index - 1; i >= 0; i--) {
-                printf("%c", binaire[i]);
-            }
-        }
-        printf("\n");
-    }
     else if (strcmp(operation, "test") == 0) {
         printf("🍯 Package C BzzBee testé avec succès!\n");
     }
     else {
         printf("❌ Opération '%s' non reconnue!\n", operation);
-        printf("💡 Opérations disponibles: puissance, racine, premier, binaire\n");
+        printf("💡 Opérations disponibles: puissance, racine, premier, binaire, test\n");
     }
-    
+
     return 0;
 }

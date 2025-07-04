@@ -1,0 +1,26 @@
+
+# Test complet du système de packages BzzBee
+bzz BONJOUR
+bzz R couleur jaune -> "=== TEST SYSTÈME DE PACKAGES BZZBEE ==="
+
+# Test de détection des langages
+bzz R couleur cyan -> "=== Vérification des langages disponibles ==="
+bzz PACKAGES
+
+# Chargement des packages
+bzz R couleur vert -> "=== Chargement des packages ==="
+bzz PACKAGE js -> math_package.js
+bzz PACKAGE py -> string_package.py
+bzz PACKAGE rb -> utils_package.rb
+bzz PACKAGE C -> test_package.c
+bzz PACKAGE bzz -> art_package.bzz
+
+# Test des fonctions packages
+bzz R couleur magenta -> "=== Test des fonctions packages ==="
+pollen -> addition 15 25 : miel
+pollen -> majuscule "bonjour bzzbee" : miel
+pollen -> puissance 2 8 : miel
+pollen -> test : miel
+
+bzz R couleur bleu -> "=== Test terminé ==="
+bzz AU REVOIR
