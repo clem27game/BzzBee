@@ -1,41 +1,70 @@
 
-# Exemple d'utilisation du système de packages BzzBee v4.0
-# Démonstration des packages multi-langages
+# Exemple d'utilisation du système de packages BzzBee v4.0 - VERSION RÉELLE
+# Démonstration complète des packages multi-langages fonctionnels
 
 bzz BONJOUR
-bzz R couleur jaune -> "=== DÉMONSTRATION DU SYSTÈME DE PACKAGES BZZBEE ==="
+bzz R couleur jaune -> "=== SYSTÈME DE PACKAGES BZZBEE RÉEL ==="
 
-# Chargement des packages
+# Vérification des packages disponibles
+bzz R couleur cyan -> "=== État initial ==="
+bzz PACKAGES
+
+# Chargement des packages avec vérification
 bzz R couleur cyan -> "=== Chargement des packages ==="
 bzz PACKAGE js -> math_package.js
 bzz PACKAGE py -> string_package.py
 bzz PACKAGE rub -> utils_package.rb
+bzz PACKAGE c -> test_package.c
 bzz PACKAGE bzz -> art_package.bzz
 
+# Vérification que tous les packages sont chargés
+bzz R couleur magenta -> "=== Packages chargés ==="
+bzz PACKAGES
+
+# Tests réels avec récupération des résultats
 bzz R couleur vert -> "=== Test du package Math (Node.js) ==="
-pollen -> addition 10 5 : miel
-pollen -> multiplication 7 8 : miel
-pollen -> factorielle 5 : miel
+pollen -> addition 25 17 : miel
+pollen -> multiplication 8 7 : miel
+pollen -> factorielle 6 : miel
+pollen -> division 100 4 : miel
 
 bzz R couleur bleu -> "=== Test du package String (Python) ==="
-pollen -> majuscule "bonjour les abeilles" : miel
-pollen -> inverse "BzzBee" : miel
-pollen -> longueur "Système de packages" : miel
+pollen -> majuscule "bonjour depuis python" : miel
+pollen -> inverse "abcdef" : miel
+pollen -> longueur "BzzBee est génial!" : miel
+pollen -> remplacer "hello world" "hello" "salut" : miel
 
 bzz R couleur magenta -> "=== Test du package Utils (Ruby) ==="
 pollen -> date : miel
-pollen -> hasard 1 50 : miel
-pollen -> fibonacci 8 : miel
+pollen -> hasard 10 100 : miel
+pollen -> fibonacci 12 : miel
+pollen -> couleur jaune "Texte coloré depuis Ruby!" : miel
 
-bzz R couleur rouge -> "=== Test du package Art (BzzBee natif) ==="
+bzz R couleur rouge -> "=== Test du package C ==="
+pollen -> puissance 2 8 : miel
+pollen -> racine 144 : miel
+pollen -> premier 17 : miel
+pollen -> binaire 42 : miel
+
+bzz R couleur cyan -> "=== Test du package BzzBee natif ==="
 pollen -> art : miel
 
-# Combinaison avec les fonctionnalités natives
-bzz R couleur cyan -> "=== Combinaison avec BzzBee natif ==="
-bzz STOCK message -> "Les packages BzzBee sont géniaux!"
-bzz MONTRE message
-bzz CALCUL 15 + 25
-bzz DESSINE coeur
+# Démonstration de l'intégration avec les fonctionnalités natives
+bzz R couleur jaune -> "=== Intégration native + packages ==="
+bzz STOCK resultat_math -> 42
+bzz MONTRE resultat_math
+pollen -> racine 42 : miel
 
-bzz R couleur jaune -> "🍯 Démonstration terminée! Le système de packages fonctionne parfaitement!"
+bzz CALCUL 15 * 3
+pollen -> premier 45 : miel
+
+bzz DESSINE coeur
+pollen -> couleur rouge "💖 BzzBee + Packages = Puissance! 💖" : miel
+
+# Test avec gestion d'erreurs
+bzz R couleur rouge -> "=== Test de gestion d'erreurs ==="
+pollen -> operation_inexistante 123 : miel
+
+bzz R couleur vert -> "🍯 Démonstration complète du système de packages réel terminée!"
+bzz R couleur cyan -> "🚀 Tous les langages fonctionnent et s'intègrent parfaitement!"
 bzz AU REVOIR
