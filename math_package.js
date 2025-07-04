@@ -1,5 +1,3 @@
-
-#!/usr/bin/env node
 // Package mathématique en JavaScript pour BzzBee
 // Convention: pollen -> paramètres : miel
 
