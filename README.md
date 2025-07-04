@@ -31,10 +31,10 @@ BzzBee est un langage de programmation simple et amusant inspiré de la communic
 - **C** (`c`/`C`) - Performance et contrôle système
 - **BzzBee** (`bzz`) - Packages natifs en BzzBee
 
-### Syntaxe de Chargement
+### Syntaxe de Chargement et d'Utilisation
 
 ```bzz
-# Charger un package
+# Charger un package (optionnel avec la syntaxe étendue)
 bzz PACKAGE js -> math_package.js
 bzz PACKAGE py -> string_package.py  
 bzz PACKAGE jl -> science_package.jl
@@ -42,10 +42,17 @@ bzz PACKAGE rub -> utils_package.rb
 bzz PACKAGE C -> system_package.c
 bzz PACKAGE bzz -> art_package.bzz
 
-# Utiliser une fonction de package
+# Syntaxe 1: Utiliser tous les packages chargés
 pollen -> addition 10 5 : miel
 pollen -> majuscule "hello world" : miel
 pollen -> fibonacci 10 : miel
+
+# Syntaxe 2: Spécifier le langage et fichier explicitement
+pollen -> addition 10 5 : miel [js math_package.js]
+pollen -> majuscule "hello world" : miel [py string_package.py]
+pollen -> fibonacci 10 : miel [rb utils_package.rb]
+pollen -> pi : miel [jl science_package.jl]
+pollen -> puissance 2 8 : miel [c test_package.c]
 ```
 
 ## 🍯 Convention des Fonctions
@@ -57,10 +64,18 @@ pollen -> paramètres_de_la_fonction : miel
 
 **Exemples :**
 ```bzz
+# Syntaxe classique (recherche dans tous les packages)
 pollen -> addition 15 25 : miel
 pollen -> inverse "BzzBee" : miel  
 pollen -> couleur rouge "Texte coloré" : miel
 pollen -> fibonacci 8 : miel
+
+# Syntaxe étendue (langage et fichier spécifiques)
+pollen -> multiplication 8 7 : miel [js math_package.js]
+pollen -> voyelles "BzzBee" : miel [py string_package.py]
+pollen -> hasard 1 100 : miel [rb utils_package.rb] 
+pollen -> sqrt 64 : miel [jl science_package.jl]
+pollen -> binaire 42 : miel [c test_package.c]
 ```
 
 ## 📝 Exemples de Packages

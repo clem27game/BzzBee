@@ -1,26 +1,67 @@
 
-# Test complet du système de packages BzzBee
+# Test complet du système de packages BzzBee avec syntaxe étendue
+# Démontre l'utilisation des différents langages et syntaxes
+
 bzz BONJOUR
-bzz R couleur jaune -> "=== TEST SYSTÈME DE PACKAGES BZZBEE ==="
+bzz R couleur jaune -> "=== TEST SYSTÈME DE PACKAGES BZZBEE V4.0 ==="
 
-# Test de détection des langages
-bzz R couleur cyan -> "=== Vérification des langages disponibles ==="
-bzz PACKAGES
-
-# Chargement des packages
-bzz R couleur vert -> "=== Chargement des packages ==="
+# Chargement des packages (optionnel si on utilise la syntaxe étendue)
+bzz R couleur cyan -> "=== Chargement des packages ==="
 bzz PACKAGE js -> math_package.js
 bzz PACKAGE py -> string_package.py
 bzz PACKAGE rb -> utils_package.rb
-bzz PACKAGE C -> test_package.c
+bzz PACKAGE c -> test_package.c
+
+# Test 1: Syntaxe classique (utilise tous les packages chargés)
+bzz R couleur vert -> "=== Test 1: Syntaxe classique ==="
+pollen -> addition 15 25 : miel
+pollen -> majuscule "bzzbee rocks" : miel
+pollen -> date : miel
+
+# Test 2: Syntaxe étendue avec spécification explicite du langage et fichier
+bzz R couleur magenta -> "=== Test 2: Syntaxe étendue avec spécification ==="
+
+# JavaScript spécifique
+pollen -> multiplication 8 7 : miel [js math_package.js]
+pollen -> factorielle 5 : miel [js math_package.js]
+
+# Python spécifique  
+pollen -> inverse "Hello World" : miel [py string_package.py]
+pollen -> voyelles "BzzBee Programming" : miel [py string_package.py]
+pollen -> palindrome "radar" : miel [py string_package.py]
+
+# Ruby spécifique
+pollen -> hasard 1 100 : miel [rb utils_package.rb]
+pollen -> fibonacci 10 : miel [rb utils_package.rb]
+pollen -> couleur rouge "Texte coloré en Ruby!" : miel [rb utils_package.rb]
+
+# C spécifique
+pollen -> puissance 2 8 : miel [c test_package.c]
+pollen -> racine 64 : miel [c test_package.c]
+pollen -> premier 17 : miel [c test_package.c]
+pollen -> binaire 42 : miel [c test_package.c]
+
+# Test 3: Mélange des deux syntaxes
+bzz R couleur bleu -> "=== Test 3: Mélange des syntaxes ==="
+pollen -> addition 100 200 : miel
+pollen -> longueur "Test de longueur" : miel [py string_package.py]
+pollen -> soustraction 50 25 : miel [js math_package.js]
+
+# Test 4: Gestion d'erreurs
+bzz R couleur rouge -> "=== Test 4: Gestion d'erreurs ==="
+bzz R console -> "Test avec langage inexistant:"
+pollen -> test : miel [xx fichier_inexistant.xx]
+
+bzz R console -> "Test avec fichier inexistant:"
+pollen -> test : miel [py fichier_inexistant.py]
+
+# Test 5: Packages BzzBee natifs
+bzz R couleur cyan -> "=== Test 5: Package BzzBee natif ==="
 bzz PACKAGE bzz -> art_package.bzz
 
-# Test des fonctions packages
-bzz R couleur magenta -> "=== Test des fonctions packages ==="
-pollen -> addition 15 25 : miel
-pollen -> majuscule "bonjour bzzbee" : miel
-pollen -> puissance 2 8 : miel
-pollen -> test : miel
+bzz R couleur jaune -> "=== TESTS TERMINÉS ==="
+bzz R console -> "🐝 Système de packages BzzBee v4.0 testé avec succès!"
+bzz R console -> "✅ Syntaxe classique: pollen -> params : miel"
+bzz R console -> "✅ Syntaxe étendue: pollen -> params : miel [langage fichier]"
 
-bzz R couleur bleu -> "=== Test terminé ==="
 bzz AU REVOIR
