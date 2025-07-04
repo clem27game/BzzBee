@@ -1,3 +1,4 @@
+
 // Package mathématique en JavaScript pour BzzBee
 // Convention: pollen -> paramètres : miel
 
@@ -14,7 +15,9 @@ if (args.length === 0) {
     process.exit(0);
 }
 
-const operation = args[0];gsfunction calculate(op, a, b) {
+const operation = args[0];
+
+function calculate(op, a, b) {
     const numA = parseFloat(a) || 0;
     const numB = parseFloat(b) || 0;
     
@@ -43,4 +46,4 @@ const operation = args[0];gsfunction calculate(op, a, b) {
     }
 }
 
-console.log(calculate(operation, args[1], args[2]));ole.log(calculate(operation, args[1], args[2]));
+console.log(calculate(operation, args[1], args[2]));
