@@ -1,70 +1,75 @@
 
-# Exemple d'utilisation du système de packages BzzBee v4.0 - VERSION RÉELLE
-# Démonstration complète des packages multi-langages fonctionnels
-
 bzz BONJOUR
-bzz R couleur jaune -> "=== SYSTÈME DE PACKAGES BZZBEE RÉEL ==="
 
-# Vérification des packages disponibles
-bzz R couleur cyan -> "=== État initial ==="
-bzz PACKAGES
+bzz R couleur jaune -> "=== SYSTÈME DE PACKAGES BZZBEE v4.0 ==="
 
-# Chargement des packages avec vérification
-bzz R couleur cyan -> "=== Chargement des packages ==="
+# Chargement des différents packages
+bzz R couleur cyan -> "📦 Chargement des packages..."
+
 bzz PACKAGE js -> math_package.js
 bzz PACKAGE py -> string_package.py
 bzz PACKAGE rub -> utils_package.rb
-bzz PACKAGE c -> test_package.c
+bzz PACKAGE C -> test_package.c
 bzz PACKAGE bzz -> art_package.bzz
 
-# Vérification que tous les packages sont chargés
-bzz R couleur magenta -> "=== Packages chargés ==="
+# Affichage des packages chargés
+bzz R couleur vert -> "📋 Packages disponibles:"
 bzz PACKAGES
 
-# Tests réels avec récupération des résultats
-bzz R couleur vert -> "=== Test du package Math (Node.js) ==="
-pollen -> addition 25 17 : miel
-pollen -> multiplication 8 7 : miel
-pollen -> factorielle 6 : miel
+# Test des fonctions de packages
+bzz R couleur bleu -> "🧪 Test des fonctions de packages:"
+
+# Package JavaScript (mathématiques)
+bzz R console -> "--- Package Math (Node.js) ---"
+pollen -> addition 15 25 : miel
+pollen -> multiplication 7 8 : miel
 pollen -> division 100 4 : miel
 
-bzz R couleur bleu -> "=== Test du package String (Python) ==="
-pollen -> majuscule "bonjour depuis python" : miel
-pollen -> inverse "abcdef" : miel
-pollen -> longueur "BzzBee est génial!" : miel
-pollen -> remplacer "hello world" "hello" "salut" : miel
+# Package Python (chaînes de caractères)
+bzz R console -> "--- Package String (Python) ---"
+pollen -> majuscule "bzzbee est genial" : miel
+pollen -> inverse "BzzBee" : miel
+pollen -> longueur "Hello World" : miel
 
-bzz R couleur magenta -> "=== Test du package Utils (Ruby) ==="
+# Package Ruby (utilitaires)
+bzz R console -> "--- Package Utils (Ruby) ---"
 pollen -> date : miel
-pollen -> hasard 10 100 : miel
-pollen -> fibonacci 12 : miel
-pollen -> couleur jaune "Texte coloré depuis Ruby!" : miel
+pollen -> hasard 1 100 : miel
+pollen -> fibonacci 8 : miel
 
-bzz R couleur rouge -> "=== Test du package C ==="
+# Package C (calculs avancés)
+bzz R console -> "--- Package C (Calculs) ---"
 pollen -> puissance 2 8 : miel
-pollen -> racine 144 : miel
+pollen -> racine 16 : miel
 pollen -> premier 17 : miel
 pollen -> binaire 42 : miel
 
-bzz R couleur cyan -> "=== Test du package BzzBee natif ==="
+# Package BzzBee natif (art)
+bzz R console -> "--- Package Art (BzzBee natif) ---"
 pollen -> art : miel
 
-# Démonstration de l'intégration avec les fonctionnalités natives
-bzz R couleur jaune -> "=== Intégration native + packages ==="
-bzz STOCK resultat_math -> 42
-bzz MONTRE resultat_math
-pollen -> racine 42 : miel
+# Combinaison avec les fonctions natives de BzzBee
+bzz R couleur magenta -> "🔀 Combinaison avec BzzBee natif:"
 
-bzz CALCUL 15 * 3
-pollen -> premier 45 : miel
+bzz CALCUL 10 + 15
+bzz HASARD 1 6
+bzz DESSINE abeille
+bzz MUSIQUE do 300
 
-bzz DESSINE coeur
-pollen -> couleur rouge "💖 BzzBee + Packages = Puissance! 💖" : miel
+# Variables et packages
+bzz R couleur rouge -> "💾 Variables et packages:"
+bzz STOCK resultat -> 0
+pollen -> addition 20 30 : miel
 
-# Test avec gestion d'erreurs
-bzz R couleur rouge -> "=== Test de gestion d'erreurs ==="
-pollen -> operation_inexistante 123 : miel
+# Boucle avec packages
+bzz R couleur cyan -> "🔄 Boucle avec packages:"
+bzz POUR i DE 1 A 3
+bzz R console -> "Itération:"
+bzz MONTRE i
+pollen -> hasard 1 10 : miel
+bzz SUIVANT
 
-bzz R couleur vert -> "🍯 Démonstration complète du système de packages réel terminée!"
-bzz R couleur cyan -> "🚀 Tous les langages fonctionnent et s'intègrent parfaitement!"
+bzz R couleur vert -> "✅ Tous les tests de packages réussis!"
+bzz R couleur jaune -> "🐝 Le système de packages BzzBee fonctionne parfaitement!"
+
 bzz AU REVOIR

@@ -1,16 +1,30 @@
-all: main
 
-CC = clang
-override CFLAGS += -g -Wno-everything -pthread -lm
+CC = gcc
+CFLAGS = -Wall -Wextra -std=c99 -lm
+TARGET = main
+SOURCE = main.c
 
-SRCS = $(shell find . -name '.ccls-cache' -type d -prune -o -type f -name '*.c' -print)
-HEADERS = $(shell find . -name '.ccls-cache' -type d -prune -o -type f -name '*.h' -print)
+.PHONY: all clean test
 
-main: $(SRCS) $(HEADERS)
-	$(CC) $(CFLAGS) $(SRCS) -o "$@"
+all: $(TARGET)
 
-main-debug: $(SRCS) $(HEADERS)
-	$(CC) $(CFLAGS) -O0 $(SRCS) -o "$@"
+$(TARGET): $(SOURCE)
+	$(CC) -o $(TARGET) $(SOURCE) $(CFLAGS)
 
 clean:
-	rm -f main main-debug
+	rm -f $(TARGET) *.out /tmp/bzzbee_*
+
+test: $(TARGET)
+	./$(TARGET) run exemple.bzz
+
+install:
+	@echo "BzzBee installé! Utilisez ./main run fichier.bzz"
+
+help:
+	@echo "Commandes disponibles:"
+	@echo "  make        - Compiler BzzBee"
+	@echo "  make test   - Tester avec exemple.bzz"
+	@echo "  make clean  - Nettoyer les fichiers temporaires"
+	@echo "  make help   - Afficher cette aide"
+
+.DEFAULT_GOAL := all
