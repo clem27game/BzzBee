@@ -64,4 +64,10 @@ bzz R console -> "🐝 Système de packages BzzBee v4.0 testé avec succès!"
 bzz R console -> "✅ Syntaxe classique: pollen -> params : miel"
 bzz R console -> "✅ Syntaxe étendue: pollen -> params : miel [langage fichier]"
 
+# Syntaxe 2: Spécifier le langage et fichier explicitement
+pollen -> addition 10 5 : miel [js math_package.js]
+pollen -> majuscule "hello world" : miel [py string_package.py]
+pollen -> fibonacci 10 : miel [rb utils_package.rb]
+pollen -> pi : miel [jl science_package.jl]
+pollen -> puissance 2 8 : miel [c test_package.c]
 bzz AU REVOIR
