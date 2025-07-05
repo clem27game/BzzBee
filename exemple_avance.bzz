@@ -43,9 +43,12 @@ bzz SEPARATEUR
 # Test des entrées utilisateur avancées
 bzz TITRE "Entrées Utilisateur Avancées"
 bzz R couleur cyan -> "Démonstration des entrées (simulation)"
-bzz R console -> "bzz RUCHE LIRE NOMBRE : Entrer un nombre"
-bzz R console -> "bzz RUCHE LIRE OUI_NON : Répondre oui/non"
-bzz R console -> "bzz RUCHE LIRE CARACTERE : Appuyer sur une touche"
+bzz R console -> "hello"
+bzz RUCHE LIRE NOMBRE : "Entrer un nombre"
+bzz R console -> "salut"
+bzz RUCHE LIRE OUI_NON : "Répondre oui/non"
+bzz R console -> "coucou"
+bzz RUCHE LIRE CARACTERE : "Appuyer sur une touche"
 
 bzz SEPARATEUR
 

@@ -23,13 +23,13 @@ BzzBee est un langage de programmation généraliste simple, amusant et puissant
 make
 
 # Exécuter un fichier .bzz
-./main run fichier.bzz
+./BzzBee/main run fichier.bzz
 
 # Mode interactif
-./main
+./BzzBee/main
 
 # Tester les nouvelles fonctionnalités
-./main run exemple_avance.bzz
+./BzzBee/main run exemple_avance.bzz
 ```
 
 ## 📊 Gestion des Structures de Données
@@ -124,7 +124,7 @@ bzz MAGIE           # Éléments magiques
 bzz FESTIVAL        # Ambiance festive
 ```
 
-### Animations et Effets Sonores
+### Animations et Effets Sonores (simulations)
 ```bzz
 bzz ANIMATION "pluie"        # Animation de pluie
 bzz ANIMATION "feu"          # Animation de feu
@@ -141,7 +141,7 @@ bzz ESSAI
     bzz CALCUL 10 / 0
 bzz CAPTURE
     bzz R couleur rouge -> "Erreur détectée et gérée!"
-bzz FIN_ESSAI
+bzz FIN
 ```
 
 ## 📦 Système de Packages Multi-Langages
@@ -237,7 +237,7 @@ bzz DESSINE fleur               # Fleur ASCII
 bzz DESSINE ruche               # Ruche ASCII
 ```
 
-### Musique
+### Musique (simulations avec frequence dans la console)
 ```bzz
 bzz MUSIQUE do 500              # Jouer note
 bzz MUSIQUE re 300              # Durée en ms
