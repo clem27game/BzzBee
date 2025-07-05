@@ -396,7 +396,7 @@ int load_package(const char* language, const char* file_path) {
 
 // Fonction pour exécuter du code selon le langage et capturer la sortie
 int execute_package_code(const char* language, const char* file_path, const char* params) {
-    char command[1000];
+    char command[2000];
     char temp_output[300];
     snprintf(temp_output, sizeof(temp_output), "/tmp/bzzbee_output_%d.txt", getpid());
 
@@ -430,7 +430,7 @@ int execute_package_code(const char* language, const char* file_path, const char
     }
 
     printf("🔧 Exécution: %s %s\n", file_path, safe_params);
-    int result = system(command);
+    system(command);
 
     // Lire et afficher la sortie du programme
     FILE* output_file = fopen(temp_output, "r");
@@ -1773,6 +1773,247 @@ int interpret_line(char* line) {
             input[strcspn(input, "\n")] = 0;
             set_variable(var_name, input);
             printf("Valeur '%s' stockée dans la variable '%s'\n", input, var_name);
+        }
+    }
+
+    // bzz LISTE AFFICHER <liste>
+    else if (strncmp(line, "bzz LISTE AFFICHER", 18) == 0) {
+        char* list_name = trim(line + 18);
+        List* list = NULL;
+        for (int i = 0; i < list_count; i++) {
+            if (strcmp(lists[i].name, list_name) == 0) {
+                list = &lists[i];
+                break;
+            }
+        }
+        if (!list) {
+            printf("Erreur: Liste non trouvée!\n");
+            return 0;
+        }
+        printf("Liste '%s' (%d éléments): [", list_name, list->size);
+        for (int i = 0; i < list->size; i++) {
+            printf("'%s'", list->elements[i]);
+            if (i < list->size - 1) printf(", ");
+        }
+        printf("]\n");
+    }
+
+    // bzz NECTAR AFFICHER <pot>
+    else if (strncmp(line, "bzz NECTAR AFFICHER", 19) == 0) {
+        char* dict_name = trim(line + 19);
+        Dictionary* dict = NULL;
+        for (int i = 0; i < dict_count; i++) {
+            if (strcmp(dictionaries[i].name, dict_name) == 0) {
+                dict = &dictionaries[i];
+                break;
+            }
+        }
+        if (!dict) {
+            printf("Erreur: Dictionnaire non trouvé!\n");
+            return 0;
+        }
+        printf("Dictionnaire '%s' (%d entrées):\n", dict_name, dict->size);
+        for (int i = 0; i < dict->size; i++) {
+            printf("  '%s' -> '%s'\n", dict->entries[i].key, dict->entries[i].value);
+        }
+    }
+
+    // bzz BANNIERE <texte>
+    else if (strncmp(line, "bzz BANNIERE", 12) == 0) {
+        char* text = trim(line + 12);
+        text = remove_quotes(text);
+        int len = strlen(text);
+        printf("╔");
+        for (int i = 0; i < len + 4; i++) printf("═");
+        printf("╗\n");
+        printf("║  %s  ║\n", text);
+        printf("╚");
+        for (int i = 0; i < len + 4; i++) printf("═");
+        printf("╝\n");
+    }
+
+    // bzz TITRE <texte>
+    else if (strncmp(line, "bzz TITRE", 9) == 0) {
+        char* text = trim(line + 9);
+        text = remove_quotes(text);
+        printf("\n%s\n", text);
+        for (int i = 0; i < (int)strlen(text); i++) printf("=");
+        printf("\n");
+    }
+
+    // bzz CADRE <texte>
+    else if (strncmp(line, "bzz CADRE", 9) == 0) {
+        char* text = trim(line + 9);
+        text = remove_quotes(text);
+        int len = strlen(text);
+        printf("┌");
+        for (int i = 0; i < len + 2; i++) printf("─");
+        printf("┐\n");
+        printf("│ %s │\n", text);
+        printf("└");
+        for (int i = 0; i < len + 2; i++) printf("─");
+        printf("┘\n");
+    }
+
+    // bzz ENCADRER <texte>
+    else if (strncmp(line, "bzz ENCADRER", 12) == 0) {
+        char* text = trim(line + 12);
+        text = remove_quotes(text);
+        int len = strlen(text);
+        for (int i = 0; i < len + 4; i++) printf("*");
+        printf("\n* %s *\n", text);
+        for (int i = 0; i < len + 4; i++) printf("*");
+        printf("\n");
+    }
+
+    // bzz SEPARATEUR
+    else if (strcmp(line, "bzz SEPARATEUR") == 0) {
+        for (int i = 0; i < 50; i++) printf("-");
+        printf("\n");
+    }
+
+    // bzz BARRE_PROGRESSION <current> <total> <width>
+    else if (strncmp(line, "bzz BARRE_PROGRESSION", 21) == 0) {
+        char* rest = trim(line + 21);
+        char* current_str = strtok(rest, " ");
+        char* total_str = strtok(NULL, " ");
+        char* width_str = strtok(NULL, " ");
+        if (current_str && total_str && width_str) {
+            int current = atoi(current_str);
+            int total = atoi(total_str);
+            int width = atoi(width_str);
+            int filled = (current * width) / total;
+            printf("[");
+            for (int i = 0; i < width; i++) {
+                if (i < filled) printf("█");
+                else printf("░");
+            }
+            printf("] %d/%d (%d%%)\n", current, total, (current * 100) / total);
+        }
+    }
+
+    // bzz FLASH <texte>
+    else if (strncmp(line, "bzz FLASH", 9) == 0) {
+        char* text = trim(line + 9);
+        text = remove_quotes(text);
+        printf("\033[5m%s\033[0m\n", text); // ANSI blink
+    }
+
+    // bzz GRADIENT <texte>
+    else if (strncmp(line, "bzz GRADIENT", 12) == 0) {
+        char* text = trim(line + 12);
+        text = remove_quotes(text);
+        int colors[] = {31, 32, 33, 34, 35, 36}; // Rouge, vert, jaune, bleu, magenta, cyan
+        for (int i = 0; text[i]; i++) {
+            printf("\033[%dm%c", colors[i % 6], text[i]);
+        }
+        printf("\033[0m\n");
+    }
+
+    // Scènes thématiques
+    else if (strcmp(line, "bzz JARDIN") == 0) {
+        printf("🌸🌻🌺 Jardin fleuri avec des papillons 🦋🌷🌹\n");
+        printf("   🌱    🌼    🌾    🌿    🌸\n");
+        printf("🐛      🌻      🌺      🦋\n");
+    }
+
+    else if (strcmp(line, "bzz OCEAN") == 0) {
+        printf("🌊～～～～～～～～～～～～～～🌊\n");
+        printf("  🐟    🐠    🦈    🐙    🦑\n");
+        printf("🌊～～～～～～～～～～～～～～🌊\n");
+    }
+
+    else if (strcmp(line, "bzz FORET") == 0) {
+        printf("🌲🌳🌲🦉🌲🦌🌳🐿️🌲🌳\n");
+        printf("  🍄🦔  🐻  🦝  🦊  🍂\n");
+        printf("🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿\n");
+    }
+
+    else if (strcmp(line, "bzz CONSTELLATION") == 0) {
+        printf("✨ · ★ ·   · ✨ ·   ★ · ✨\n");
+        printf("  ·   ★   ✨ ·   ★   ·  \n");
+        printf("★ ·   ✨ ·   · ★ ·   ✨ ·\n");
+    }
+
+    else if (strcmp(line, "bzz GALAXIE") == 0) {
+        printf("    ✨ · ★ · ✨ 🌌 ★ · ✨ ·\n");
+        printf("  ★ · ✨ · 🪐 · ★ · ✨ · ★\n");
+        printf("✨ · ★ · ✨ · ★ · ✨ · ★ ·\n");
+    }
+
+    else if (strcmp(line, "bzz CHATEAU") == 0) {
+        printf("      🏰      \n");
+        printf("   🏯  👑  🏯   \n");
+        printf("🗡️ ⚔️ 🛡️ ⚔️ 🗡️\n");
+    }
+
+    else if (strcmp(line, "bzz LABORATOIRE") == 0) {
+        printf("🧪⚗️🔬🧫💊\n");
+        printf("⚛️ 🧬 🔭 🌡️ 🔍\n");
+        printf("🥽 🧪 ⚗️ 🔬 🧫\n");
+    }
+
+    else if (strcmp(line, "bzz VAISSEAU") == 0) {
+        printf("   🚀   ✨\n");
+        printf("🛸 👽 🛰️ 🚀\n");
+        printf("  ✨  🌌  ⭐\n");
+    }
+
+    else if (strcmp(line, "bzz MONTAGNE") == 0) {
+        printf("    🏔️   ⛰️   🗻\n");
+        printf("  🌲⛰️🌲 🏔️ 🌲⛰️🌲\n");
+        printf("🌿🌲🌿🌲🌿🌲🌿🌲🌿\n");
+    }
+
+    else if (strcmp(line, "bzz CITE_FUTUR") == 0) {
+        printf("🏢🌆🏗️🏙️🌃\n");
+        printf("🚗🚕🚙🚌🚎\n");
+        printf("🛣️🛣️🛣️🛣️🛣️\n");
+    }
+
+    else if (strcmp(line, "bzz PIRATES") == 0) {
+        printf("🏴‍☠️⚔️💰🗺️👑\n");
+        printf("🦜 ⛵ 🏴‍☠️ 🏝️ 💎\n");
+        printf("⚓ 🗡️ 💰 ⚔️ 🦜\n");
+    }
+
+    else if (strcmp(line, "bzz MAGIE") == 0) {
+        printf("✨🔮⭐🌟💫\n");
+        printf("🪄 ✨ 🔮 🌙 ⭐\n");
+        printf("💫 🌟 ✨ 🪄 🔮\n");
+    }
+
+    else if (strcmp(line, "bzz FESTIVAL") == 0) {
+        printf("🎊🎉🎈🎆🎇\n");
+        printf("🎵 🎶 🎤 🎸 🥁\n");
+        printf("🎪 🎠 🎡 🎢 🎭\n");
+    }
+
+    // bzz ANIMATION <type>
+    else if (strncmp(line, "bzz ANIMATION", 13) == 0) {
+        char* type = trim(line + 13);
+        type = remove_quotes(type);
+        if (strcmp(type, "pluie") == 0) {
+            printf("💧 💧   💧 💧   💧\n");
+            printf("  💧   💧 💧 💧\n");
+            printf("💧   💧   💧   💧\n");
+        } else if (strcmp(type, "feu") == 0) {
+            printf("🔥 🔥🔥 🔥 🔥🔥\n");
+            printf(" 🔥🔥🔥🔥🔥 \n");
+            printf("🔥🔥🔥🔥🔥🔥🔥\n");
+        }
+    }
+
+    // bzz SON <type>
+    else if (strncmp(line, "bzz SON", 7) == 0) {
+        char* type = trim(line + 7);
+        type = remove_quotes(type);
+        if (strcmp(type, "explosion") == 0) {
+            printf("💥 BOOOOM! 💥\n");
+        } else if (strcmp(type, "applaudissement") == 0) {
+            printf("👏 CLAP CLAP CLAP! 👏\n");
+        } else if (strcmp(type, "vent") == 0) {
+            printf("💨 Whoooosh... 💨\n");
         }
     }
 
