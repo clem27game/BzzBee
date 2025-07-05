@@ -22,6 +22,11 @@
 #define MAX_DICT_SIZE 500
 #define MAX_STORIES 20
 #define MAX_STORY_CHOICES 10
+#define MAX_VAR_NAME 100
+#define MAX_VAR_VALUE 500
+#define MAX_ARRAY_SIZE 100
+#define MAX_LOOPS 20
+#define MAX_FUNCTIONS 50
 
 // Structure pour les packages
 typedef struct {
@@ -1407,7 +1412,7 @@ int interpret_line(char* line) {
                 fclose(file);
 
                 set_variable(var_name, buffer);
-                printf("Contenu du fichier '%s' stocké dans la variable '%s'\n", remove_quotes(file_path), var_name);
+                printf("Contenu du fichier '%s' lu (%zu octets) et stocké dans '%s'\n", remove_quotes(file_path), bytes_read, var_name);
             }
         } else {
             printf("Format: bzz FICHIER LIRE <chemin_fichier> : contenu_variable\n");
@@ -1533,6 +1538,7 @@ int interpret_line(char* line) {
             double num = strtod(input, &endptr);
             if (*endptr == '\0') {
                 set_variable(var_name, input);
+                printf("Nombre %.2f stocké dans la variable '%s'\n", num, var_name);
             } else {
                 printf("Erreur: Entrée non valide. Veuillez entrer un nombre.\n");
             }
@@ -1546,11 +1552,15 @@ int interpret_line(char* line) {
         char input[MAX_VAR_VALUE];
         if (fgets(input, sizeof(input), stdin)) {
             input[strcspn(input, "\n")] = 0;
-            input[0] = toupper(input[0]);  // Convertir la première lettre en majuscule
+            for (int i = 0; input[i]; i++) {
+                input[i] = toupper(input[i]);
+            }
             if (strcmp(input, "OUI") == 0) {
                 set_variable(var_name, "true");
+                printf("Valeur 'true' stockée dans la variable '%s'\n", var_name);
             } else if (strcmp(input, "NON") == 0) {
                 set_variable(var_name, "false");
+                printf("Valeur 'false' stockée dans la variable '%s'\n", var_name);
             } else {
                 printf("Erreur: Entrée non valide. Veuillez entrer OUI ou NON.\n");
             }
@@ -1762,6 +1772,7 @@ int interpret_line(char* line) {
         if (fgets(input, sizeof(input), stdin)) {
             input[strcspn(input, "\n")] = 0;
             set_variable(var_name, input);
+            printf("Valeur '%s' stockée dans la variable '%s'\n", input, var_name);
         }
     }
 
