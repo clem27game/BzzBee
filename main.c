@@ -2,27 +2,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
-#include <unistd.h>
-#include <math.h>
 #include <time.h>
-#include <sys/wait.h>
+#include <math.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <ctype.h>
+#include <termios.h>
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
-
-#define MAX_LINE_LENGTH 1000
 #define MAX_VARIABLES 100
-#define MAX_VAR_NAME 50
-#define MAX_VAR_VALUE 200
-#define MAX_LOOPS 10
-#define MAX_CONDITIONS 10
-#define MAX_FUNCTIONS 20
-#define MAX_ARRAY_SIZE 100
-#define MAX_MUSIC_NOTES 50
+#define MAX_ARRAYS 50
 #define MAX_PACKAGES 50
-#define MAX_PACKAGE_FUNCTIONS 100
+#define MAX_PACKAGE_FUNCTIONS 200
+#define MAX_LINE_LENGTH 1000
+#define MAX_CANVAS_WIDTH 80
+#define MAX_CANVAS_HEIGHT 30
+#define MAX_LISTS 50
+#define MAX_DICTS 50
+#define MAX_LIST_SIZE 1000
+#define MAX_DICT_SIZE 500
+#define MAX_STORIES 20
+#define MAX_STORY_CHOICES 10
 
 // Structure pour les packages
 typedef struct {
@@ -71,15 +70,62 @@ typedef struct {
     int param_count;
 } Function;
 
+typedef struct {
+    char name[100];
+    char elements[1000];
+} Array;
+
+// Nouvelles structures pour listes avancées
+typedef struct {
+    char name[100];
+    char elements[MAX_LIST_SIZE][200];
+    int size;
+} List;
+
+// Structure pour dictionnaires (NECTAR)
+typedef struct {
+    char key[100];
+    char value[500];
+} DictEntry;
+
+typedef struct {
+    char name[100];
+    DictEntry entries[MAX_DICT_SIZE];
+    int size;
+} Dictionary;
+
+// Structure pour histoires interactives
+typedef struct {
+    char question[500];
+    char choices[MAX_STORY_CHOICES][200];
+    int next_scenes[MAX_STORY_CHOICES];
+    int choice_count;
+} StoryScene;
+
+typedef struct {
+    char name[100];
+    StoryScene scenes[50];
+    int scene_count;
+    int current_scene;
+} Story;
+
 // Variables globales
 Variable variables[MAX_VARIABLES];
 Loop loops[MAX_LOOPS];
 Function functions[MAX_FUNCTIONS];
+Array arrays[MAX_ARRAYS];
+List lists[MAX_LISTS];
+Dictionary dictionaries[MAX_DICTS];
+Story stories[MAX_STORIES];
 Package packages[MAX_PACKAGES];
 PackageFunction package_functions[MAX_PACKAGE_FUNCTIONS];
 int var_count = 0;
 int loop_count = 0;
 int function_count = 0;
+int array_count = 0;
+int list_count = 0;
+int dict_count = 0;
+int story_count = 0;
 int package_count = 0;
 int package_function_count = 0;
 int current_line = 0;
@@ -729,7 +775,7 @@ void draw_ascii(const char* shape) {
         printf("     \\  |  /\n");
         printf("  --- \\(o)/ ---\n");
         printf("     /  |  \\\n");
-        printf("    /   |   \\\n");
+        printf("    /   |   /\n");
     } else if (strcmp(shape, "nuage") == 0) {
         printf("      .-~~~-.\n");
         printf("   .-~       ~-.\n");
@@ -748,6 +794,19 @@ void draw_ascii(const char* shape) {
         printf("Forme '%s' non reconnue.\n", shape);
         printf("Formes disponibles: abeille, ruche, fleur, hexagone, soleil, nuage, coeur\n");
     }
+}
+
+// Fonction pour lire un seul caractère sans echo
+int getch() {
+    struct termios oldattr, newattr;
+    int ch;
+    tcgetattr( STDIN_FILENO, &oldattr );
+    newattr = oldattr;
+    newattr.c_lflag &= ~( ICANON | ECHO );
+    tcsetattr( STDIN_FILENO, TCSANOW, &newattr );
+    ch = getchar();
+    tcsetattr( STDIN_FILENO, TCSANOW, &oldattr );
+    return ch;
 }
 
 // Fonction pour interpréter une ligne
@@ -802,6 +861,279 @@ int interpret_line(char* line) {
             char* array_name = trim(rest);
             char* values = trim(arrow + 2);
             create_array(array_name, remove_quotes(values));
+        }
+    }
+
+    // bzz LISTE AJOUTER <liste> <élément>
+    else if (strncmp(line, "bzz LISTE AJOUTER", 16) == 0) {
+        char* rest = line + 16;
+        char* list_name = strtok(rest, " ");
+        char* element = strtok(NULL, "");
+        if (list_name && element) {
+            List* list = NULL;
+            for (int i = 0; i < list_count; i++) {
+                if (strcmp(lists[i].name, list_name) == 0) {
+                    list = &lists[i];
+                    break;
+                }
+            }
+            if (!list) {
+                if (list_count < MAX_LISTS) {
+                    list = &lists[list_count++];
+                    strcpy(list->name, list_name);
+                    list->size = 0;
+                } else {
+                    printf("Erreur: Trop de listes!\n");
+                    return 0;
+                }
+            }
+            if (list->size < MAX_LIST_SIZE) {
+                strcpy(list->elements[list->size], remove_quotes(trim(element)));
+                list->size++;
+                printf("Élément '%s' ajouté à la liste '%s' (taille: %d)\n", remove_quotes(trim(element)), list_name, list->size);
+            } else {
+                printf("Erreur: Liste pleine!\n");
+            }
+        } else {
+            printf("Format: bzz LISTE AJOUTER <liste> <élément>\n");
+        }
+    }
+
+    // bzz LISTE RETIRER <liste> <élément>
+    else if (strncmp(line, "bzz LISTE RETIRER", 16) == 0) {
+        char* rest = line + 16;
+        char* list_name = strtok(rest, " ");
+        char* element = strtok(NULL, "");
+        if (list_name && element) {
+            List* list = NULL;
+            for (int i = 0; i < list_count; i++) {
+                if (strcmp(lists[i].name, list_name) == 0) {
+                    list = &lists[i];
+                    break;
+                }
+            }
+            if (!list) {
+                printf("Erreur: Liste non trouvée!\n");
+                return 0;
+            }
+
+            int found = 0;
+            for (int i = 0; i < list->size; i++) {
+                if (strcmp(list->elements[i], remove_quotes(trim(element))) == 0) {
+                    // Décaler les éléments suivants
+                    for (int j = i; j < list->size - 1; j++) {
+                        strcpy(list->elements[j], list->elements[j + 1]);
+                    }
+                    list->size--;
+                    found = 1;
+                    printf("Élément '%s' retiré de la liste '%s' (taille: %d)\n", remove_quotes(trim(element)), list_name, list->size);
+                    break;
+                }
+            }
+            if (!found) {
+                printf("Erreur: Élément non trouvé dans la liste!\n");
+            }
+        } else {
+            printf("Format: bzz LISTE RETIRER <liste> <élément>\n");
+        }
+    }
+
+    // bzz LISTE TAILLE <liste>
+    else if (strncmp(line, "bzz LISTE TAILLE", 15) == 0) {
+        char* list_name = trim(line + 15);
+        List* list = NULL;
+        for (int i = 0; i < list_count; i++) {
+            if (strcmp(lists[i].name, list_name) == 0) {
+                list = &lists[i];
+                break;
+            }
+        }
+        if (!list) {
+            printf("Erreur: Liste non trouvée!\n");
+            return 0;
+        }
+        printf("Taille de la liste '%s': %d\n", list_name, list->size);
+    }
+
+    // bzz LISTE INDEX <liste> <élément>
+    else if (strncmp(line, "bzz LISTE INDEX", 14) == 0) {
+        char* rest = line + 14;
+        char* list_name = strtok(rest, " ");
+        char* element = strtok(NULL, "");
+        if (list_name && element) {
+            List* list = NULL;
+            for (int i = 0; i < list_count; i++) {
+                if (strcmp(lists[i].name, list_name) == 0) {
+                    list = &lists[i];
+                    break;
+                }
+            }
+            if (!list) {
+                printf("Erreur: Liste non trouvée!\n");
+                return 0;
+            }
+
+            int index = -1;
+            for (int i = 0; i < list->size; i++) {
+                if (strcmp(list->elements[i], remove_quotes(trim(element))) == 0) {
+                    index = i;
+                    break;
+                }
+            }
+
+            if (index != -1) {
+                printf("Index de l'élément '%s' dans la liste '%s': %d\n", remove_quotes(trim(element)), list_name, index);
+            } else {
+                printf("Erreur: Élément non trouvé dans la liste!\n");
+            }
+        } else {
+            printf("Format: bzz LISTE INDEX <liste> <élément>\n");
+        }
+    }
+
+    // bzz LISTE TRIER <liste>
+    else if (strncmp(line, "bzz LISTE TRIER", 14) == 0) {
+        char* list_name = trim(line + 14);
+        List* list = NULL;
+        for (int i = 0; i < list_count; i++) {
+            if (strcmp(lists[i].name, list_name) == 0) {
+                list = &lists[i];
+                break;
+            }
+        }
+        if (!list) {
+            printf("Erreur: Liste non trouvée!\n");
+            return 0;
+        }
+
+        // Tri à bulles (simple pour l'exemple)
+        for (int i = 0; i < list->size - 1; i++) {
+            for (int j = 0; j < list->size - i - 1; j++) {
+                if (strcmp(list->elements[j], list->elements[j + 1]) > 0) {
+                    char temp[200];
+                    strcpy(temp, list->elements[j]);
+                    strcpy(list->elements[j], list->elements[j + 1]);
+                    strcpy(list->elements[j + 1], temp);
+                }
+            }
+        }
+        printf("Liste '%s' triée!\n", list_name);
+    }
+
+    // bzz NECTAR AJOUTER <pot> <clé> <valeur>
+    else if (strncmp(line, "bzz NECTAR AJOUTER", 18) == 0) {
+        char* rest = line + 18;
+        char* dict_name = strtok(rest, " ");
+        char* key = strtok(NULL, " ");
+        char* value = strtok(NULL, "");
+
+        if (dict_name && key && value) {
+            Dictionary* dict = NULL;
+            for (int i = 0; i < dict_count; i++) {
+                if (strcmp(dictionaries[i].name, dict_name) == 0) {
+                    dict = &dictionaries[i];
+                    break;
+                }
+            }
+            if (!dict) {
+                if (dict_count < MAX_DICTS) {
+                    dict = &dictionaries[dict_count++];
+                    strcpy(dict->name, dict_name);
+                    dict->size = 0;
+                } else {
+                    printf("Erreur: Trop de dictionnaires!\n");
+                    return 0;
+                }
+            }
+
+            if (dict->size < MAX_DICT_SIZE) {
+                strcpy(dict->entries[dict->size].key, remove_quotes(trim(key)));
+                strcpy(dict->entries[dict->size].value, remove_quotes(trim(value)));
+                dict->size++;
+                printf("Ajouté: %s -> %s dans le dictionnaire '%s'\n", remove_quotes(trim(key)), remove_quotes(trim(value)), dict_name);
+            } else {
+                printf("Erreur: Dictionnaire plein!\n");
+            }
+        } else {
+            printf("Format: bzz NECTAR AJOUTER <pot> <clé> <valeur>\n");
+        }
+    }
+
+    // bzz NECTAR LIRE <pot> <clé>
+    else if (strncmp(line, "bzz NECTAR LIRE", 15) == 0) {
+        char* rest = line + 15;
+        char* dict_name = strtok(rest, " ");
+        char* key = strtok(NULL, "");
+
+        if (dict_name && key) {
+            Dictionary* dict = NULL;
+            for (int i = 0; i < dict_count; i++) {
+                if (strcmp(dictionaries[i].name, dict_name) == 0) {
+                    dict = &dictionaries[i];
+                    break;
+                }
+            }
+            if (!dict) {
+                printf("Erreur: Dictionnaire non trouvé!\n");
+                return 0;
+            }
+
+            int found = 0;
+            for (int i = 0; i < dict->size; i++) {
+                if (strcmp(dict->entries[i].key, remove_quotes(trim(key))) == 0) {
+                    printf("Valeur de '%s' dans '%s': %s\n", remove_quotes(trim(key)), dict_name, dict->entries[i].value);
+                    found = 1;
+                    break;
+                }
+            }
+
+            if (!found) {
+                printf("Erreur: Clé non trouvée dans le dictionnaire!\n");
+            }
+        } else {
+            printf("Format: bzz NECTAR LIRE <pot> <clé>\n");
+        }
+    }
+
+    // bzz NECTAR SUPPRIMER <pot> <clé>
+    else if (strncmp(line, "bzz NECTAR SUPPRIMER", 20) == 0) {
+        char* rest = line + 20;
+        char* dict_name = strtok(rest, " ");
+        char* key = strtok(NULL, "");
+
+        if (dict_name && key) {
+            Dictionary* dict = NULL;
+            for (int i = 0; i < dict_count; i++) {
+                if (strcmp(dictionaries[i].name, dict_name) == 0) {
+                    dict = &dictionaries[i];
+                    break;
+                }
+            }
+            if (!dict) {
+                printf("Erreur: Dictionnaire non trouvé!\n");
+                return 0;
+            }
+
+            int found = 0;
+            for (int i = 0; i < dict->size; i++) {
+                if (strcmp(dict->entries[i].key, remove_quotes(trim(key))) == 0) {
+                    // Décaler les éléments suivants
+                    for (int j = i; j < dict->size - 1; j++) {
+                        strcpy(dict->entries[j].key, dict->entries[j + 1].key);
+                        strcpy(dict->entries[j].value, dict->entries[j + 1].value);
+                    }
+                    dict->size--;
+                    found = 1;
+                    printf("Clé '%s' supprimée du dictionnaire '%s'\n", remove_quotes(trim(key)), dict_name);
+                    break;
+                }
+            }
+
+            if (!found) {
+                printf("Erreur: Clé non trouvée dans le dictionnaire!\n");
+            }
+        } else {
+            printf("Format: bzz NECTAR SUPPRIMER <pot> <clé>\n");
         }
     }
 
@@ -1055,6 +1387,373 @@ int interpret_line(char* line) {
         }
     }
 
+   // bzz FICHIER LIRE <chemin_fichier> : contenu_variable
+    else if (strncmp(line, "bzz FICHIER LIRE", 16) == 0) {
+        char* rest = line + 16;
+        char* file_path = strtok(rest, " :");
+        char* var_name = strtok(NULL, "");
+
+        if (file_path && var_name) {
+            file_path = trim(file_path);
+            var_name = trim(var_name);
+
+            FILE* file = fopen(remove_quotes(file_path), "r");
+            if (!file) {
+                printf("Erreur: Fichier '%s' introuvable!\n", remove_quotes(file_path));
+            } else {
+                char buffer[MAX_VAR_VALUE];
+                size_t bytes_read = fread(buffer, 1, sizeof(buffer) - 1, file);
+                buffer[bytes_read] = '\0';
+                fclose(file);
+
+                set_variable(var_name, buffer);
+                printf("Contenu du fichier '%s' stocké dans la variable '%s'\n", remove_quotes(file_path), var_name);
+            }
+        } else {
+            printf("Format: bzz FICHIER LIRE <chemin_fichier> : contenu_variable\n");
+        }
+    }
+
+    // bzz FICHIER ÉCRIRE <chemin_fichier> <contenu>
+    else if (strncmp(line, "bzz FICHIER ÉCRIRE", 18) == 0) {
+        char* rest = line + 18;
+        char* file_path = strtok(rest, " ");
+        char* content = strtok(NULL, "");
+
+        if (file_path && content) {
+            file_path = trim(file_path);
+            content = trim(content);
+
+            FILE* file = fopen(remove_quotes(file_path), "w");
+            if (!file) {
+                printf("Erreur: Impossible d'ouvrir le fichier '%s' pour écriture!\n", remove_quotes(file_path));
+            } else {
+                fprintf(file, "%s", remove_quotes(content));
+                fclose(file);
+                printf("Contenu écrit dans le fichier '%s'\n", remove_quotes(file_path));
+            }
+        } else {
+            printf("Format: bzz FICHIER ÉCRIRE <chemin_fichier> <contenu>\n");
+        }
+    }
+
+    // bzz FICHIER EXISTE <chemin_fichier> : bool_variable
+    else if (strncmp(line, "bzz FICHIER EXISTE", 18) == 0) {
+        char* rest = line + 18;
+        char* file_path = strtok(rest, " :");
+        char* var_name = strtok(NULL, "");
+
+        if (file_path && var_name) {
+            file_path = trim(file_path);
+            var_name = trim(var_name);
+
+            if (access(remove_quotes(file_path), F_OK) != -1) {
+                set_variable(var_name, "true");
+                printf("Le fichier '%s' existe. Variable '%s' mise à 'true'\n", remove_quotes(file_path), var_name);
+            } else {
+                set_variable(var_name, "false");
+                printf("Le fichier '%s' n'existe pas. Variable '%s' mise à 'false'\n", remove_quotes(file_path), var_name);
+            }
+        } else {
+            printf("Format: bzz FICHIER EXISTE <chemin_fichier> : bool_variable\n");
+        }
+    }
+
+    // bzz FICHIER SUPPRIMER <chemin_fichier>
+    else if (strncmp(line, "bzz FICHIER SUPPRIMER", 21) == 0) {
+        char* file_path = trim(line + 21);
+
+        if (file_path) {
+            if (remove(remove_quotes(file_path)) == 0) {
+                printf("Fichier '%s' supprimé avec succès\n", remove_quotes(file_path));
+            } else {
+                printf("Erreur: Impossible de supprimer le fichier '%s'\n", remove_quotes(file_path));
+            }
+        } else {
+            printf("Format: bzz FICHIER SUPPRIMER <chemin_fichier>\n");
+        }
+    }
+
+    // bzz ESSAI ... CAPTURE ... FIN_ESSAI
+    else if (strncmp(line, "bzz ESSAI", 9) == 0) {
+        int essai_start_line = current_line;
+        int capture_start_line = -1;
+        int fin_essai_line = -1;
+
+        // Trouver les lignes CAPTURE et FIN_ESSAI
+        for (int i = current_line + 1; i < total_lines; i++) {
+            if (strncmp(program_lines[i], "bzz CAPTURE", 11) == 0) {
+                capture_start_line = i;
+            } else if (strncmp(program_lines[i], "bzz FIN_ESSAI", 11) == 0) {
+                fin_essai_line = i;
+                break;
+            }
+        }
+
+        if (capture_start_line == -1 || fin_essai_line == -1) {
+            printf("Erreur: Structure ESSAI...CAPTURE...FIN_ESSAI incomplète!\n");
+            return 0;
+        }
+
+        // Exécuter le bloc ESSAI
+        int error_occurred = 0;
+        for (int i = essai_start_line + 1; i < capture_start_line; i++) {
+            int result = interpret_line(program_lines[i]);
+             if (result == -1) break;
+            if (result != 0) {
+                error_occurred = 1;
+                break;
+            }
+        }
+
+        // Si une erreur s'est produite, exécuter le bloc CAPTURE
+        if (error_occurred) {
+            printf("Erreur détectée! Exécution du bloc CAPTURE...\n");
+            for (int i = capture_start_line + 1; i < fin_essai_line; i++) {
+                 int result = interpret_line(program_lines[i]);
+                 if (result == -1) break;
+                if (result != 0) break;
+            }
+        }
+
+        // Sauter jusqu'à la fin du bloc ESSAI
+        current_line = fin_essai_line;
+        return 1;
+    }
+
+    // bzz RUCHE LIRE NOMBRE : ma_variable_nombre
+   else if (strncmp(line, "bzz RUCHE LIRE NOMBRE", 21) == 0) {
+        char* var_name = trim(line + 21);
+        printf("Entrez un nombre pour %s: ", var_name);
+        char input[MAX_VAR_VALUE];
+        if (fgets(input, sizeof(input), stdin)) {
+            input[strcspn(input, "\n")] = 0;
+            // Vérifier si l'entrée est un nombre
+            char* endptr;
+            double num = strtod(input, &endptr);
+            if (*endptr == '\0') {
+                set_variable(var_name, input);
+            } else {
+                printf("Erreur: Entrée non valide. Veuillez entrer un nombre.\n");
+            }
+        }
+    }
+
+    // bzz RUCHE LIRE OUI_NON : ma_variable_booleenne
+    else if (strncmp(line, "bzz RUCHE LIRE OUI_NON", 22) == 0) {
+        char* var_name = trim(line + 22);
+        printf("Entrez OUI ou NON pour %s: ", var_name);
+        char input[MAX_VAR_VALUE];
+        if (fgets(input, sizeof(input), stdin)) {
+            input[strcspn(input, "\n")] = 0;
+            input[0] = toupper(input[0]);  // Convertir la première lettre en majuscule
+            if (strcmp(input, "OUI") == 0) {
+                set_variable(var_name, "true");
+            } else if (strcmp(input, "NON") == 0) {
+                set_variable(var_name, "false");
+            } else {
+                printf("Erreur: Entrée non valide. Veuillez entrer OUI ou NON.\n");
+            }
+        }
+    }
+
+    // bzz RUCHE LIRE CARACTERE : mon_caractere
+    else if (strncmp(line, "bzz RUCHE LIRE CARACTERE", 24) == 0) {
+        char* var_name = trim(line + 24);
+        printf("Entrez un caractère pour %s: ", var_name);
+        int ch = getch(); // Lire un caractère sans echo
+        printf("\n");
+        char input[2];
+        input[0] = (char)ch;
+        input[1] = '\0';
+        set_variable(var_name, input);
+    }
+
+    // bzz TEMPS HEURE_ACTUELLE : heure
+    else if (strncmp(line, "bzz TEMPS HEURE_ACTUELLE", 23) == 0) {
+        char* var_name = trim(line + 23);
+        time_t now = time(NULL);
+        struct tm *tm_struct = localtime(&now);
+        char time_str[20];
+        strftime(time_str, sizeof(time_str), "%H:%M:%S", tm_struct);
+        set_variable(var_name, time_str);
+        printf("Heure actuelle stockée dans la variable '%s'\n", var_name);
+    }
+
+    // bzz TEMPS DATE_ACTUELLE : date
+    else if (strncmp(line, "bzz TEMPS DATE_ACTUELLE", 23) == 0) {
+        char* var_name = trim(line + 23);
+        time_t now = time(NULL);
+        struct tm *tm_struct = localtime(&now);
+        char date_str[20];
+        strftime(date_str, sizeof(date_str), "%Y-%m-%d", tm_struct);
+        set_variable(var_name, date_str);
+        printf("Date actuelle stockée dans la variable '%s'\n", var_name);
+    }
+
+    // bzz CURSEUR X Y
+    else if (strncmp(line, "bzz CURSEUR", 11) == 0) {
+        char* rest = trim(line + 11);
+        char* x_str = strtok(rest, " ");
+        char* y_str = strtok(NULL, " ");
+
+        if (x_str && y_str) {
+            int x = atoi(x_str);
+            int y = atoi(y_str);
+            printf("\033[%d;%dH", y, x); // ANSI code pour positionner le curseur
+        } else {
+            printf("Format: bzz CURSEUR X Y\n");
+        }
+    }
+
+    // bzz CONSOLE EFFACER
+    else if (strcmp(line, "bzz CONSOLE EFFACER") == 0) {
+        printf("\033[2J"); // ANSI code pour effacer l'écran
+        printf("\033[H");  // ANSI code pour repositionner le curseur en haut à gauche
+    }
+
+    // bzz HISTOIRE INIT <nom_histoire>
+    else if (strncmp(line, "bzz HISTOIRE INIT", 17) == 0) {
+        char* story_name = trim(line + 17);
+        Story* story = NULL;
+        for (int i = 0; i < story_count; i++) {
+            if (strcmp(stories[i].name, story_name) == 0) {
+                story = &stories[i];
+                break;
+            }
+        }
+        if (!story) {
+            if (story_count < MAX_STORIES) {
+                story = &stories[story_count++];
+                strcpy(story->name, story_name);
+                story->scene_count = 0;
+                story->current_scene = 0;
+                printf("Histoire '%s' initialisée.\n", story_name);
+            } else {
+                printf("Erreur: Trop d'histoires!\n");
+            }
+        } else {
+            printf("Erreur: Une histoire avec ce nom existe déjà.\n");
+        }
+    }
+
+    // bzz HISTOIRE SCENE <nom_histoire> <question>
+    else if (strncmp(line, "bzz HISTOIRE SCENE", 18) == 0) {
+        char* rest = line + 18;
+        char* story_name = strtok(rest, " ");
+        char* question = strtok(NULL, "");
+
+        if (story_name && question) {
+            Story* story = NULL;
+            for (int i = 0; i < story_count; i++) {
+                if (strcmp(stories[i].name, story_name) == 0) {
+                    story = &stories[i];
+                    break;
+                }
+            }
+            if (!story) {
+                printf("Erreur: Histoire non trouvée!\n");
+                return 0;
+            }
+
+            if (story->scene_count < 50) {
+                StoryScene* scene = &story->scenes[story->scene_count++];
+                strcpy(scene->question, remove_quotes(trim(question)));
+                scene->choice_count = 0;
+                printf("Scène ajoutée à l'histoire '%s': %s\n", story_name, remove_quotes(trim(question)));
+            } else {
+                printf("Erreur: Trop de scènes dans l'histoire!\n");
+            }
+        } else {
+            printf("Format: bzz HISTOIRE SCENE <nom_histoire> <question>\n");
+        }
+    }
+
+    // bzz HISTOIRE CHOIX <nom_histoire> <numero_scene> <choix> <prochaine_scene>
+    else if (strncmp(line, "bzz HISTOIRE CHOIX", 19) == 0) {
+        char* rest = line + 19;
+        char* story_name = strtok(rest, " ");
+        char* scene_num_str = strtok(NULL, " ");
+        char* choice = strtok(NULL, " ");
+        char* next_scene_str = strtok(NULL, "");
+
+        if (story_name && scene_num_str && choice && next_scene_str) {
+            Story* story = NULL;
+            for (int i = 0; i < story_count; i++) {
+                if (strcmp(stories[i].name, story_name) == 0) {
+                    story = &stories[i];
+                    break;
+                }
+            }
+            if (!story) {
+                printf("Erreur: Histoire non trouvée!\n");
+                return 0;
+            }
+
+            int scene_num = atoi(scene_num_str);
+            int next_scene = atoi(next_scene_str);
+
+            if (scene_num >= 0 && scene_num < story->scene_count) {
+                StoryScene* scene = &story->scenes[scene_num];
+                if (scene->choice_count < MAX_STORY_CHOICES) {
+                    strcpy(scene->choices[scene->choice_count], remove_quotes(trim(choice)));
+                    scene->next_scenes[scene->choice_count] = next_scene;
+                    scene->choice_count++;
+                    printf("Choix ajouté à la scène %d de l'histoire '%s': %s -> %d\n", scene_num, story_name, remove_quotes(trim(choice)), next_scene);
+                } else {
+                    printf("Erreur: Trop de choix pour cette scène!\n");
+                }
+            } else {
+                printf("Erreur: Numéro de scène invalide!\n");
+            }
+        } else {
+            printf("Format: bzz HISTOIRE CHOIX <nom_histoire> <numero_scene> <choix> <prochaine_scene>\n");
+        }
+    }
+
+    // bzz HISTOIRE JOUER <nom_histoire>
+    else if (strncmp(line, "bzz HISTOIRE JOUER", 18) == 0) {
+        char* story_name = trim(line + 18);
+        Story* story = NULL;
+        for (int i = 0; i < story_count; i++) {
+            if (strcmp(stories[i].name, story_name) == 0) {
+                story = &stories[i];
+                break;
+            }
+        }
+        if (!story) {
+            printf("Erreur: Histoire non trouvée!\n");
+            return 0;
+        }
+
+        story->current_scene = 0;
+        while (story->current_scene >= 0 && story->current_scene < story->scene_count) {
+            StoryScene* scene = &story->scenes[story->current_scene];
+            printf("%s\n", scene->question);
+
+            for (int i = 0; i < scene->choice_count; i++) {
+                printf("%d. %s\n", i + 1, scene->choices[i]);
+            }
+
+            if (scene->choice_count > 0) {
+                printf("Choisissez une option (1-%d): ", scene->choice_count);
+                char input[10];
+                if (fgets(input, sizeof(input), stdin)) {
+                    int choice = atoi(input);
+                    if (choice >= 1 && choice <= scene->choice_count) {
+                        story->current_scene = scene->next_scenes[choice - 1];
+                    } else {
+                        printf("Choix invalide!\n");
+                        break;
+                    }
+                }
+            } else {
+                break; // Fin de l'histoire
+            }
+        }
+        printf("Fin de l'histoire '%s'!\n", story_name);
+    }
+
     // bzz LIRE variable
     else if (strncmp(line, "bzz LIRE", 8) == 0) {
         char* var_name = trim(line + 8);
@@ -1105,9 +1804,9 @@ int interpret_line(char* line) {
             printf("📦 Packages chargés (%d/%d):\n", package_count, MAX_PACKAGES);
             for (int i = 0; i < package_count; i++) {
                 Package* pkg = &packages[i];
-                printf("  %d. %s (%s) - %s\n", 
-                       i + 1, 
-                       pkg->file_path, 
+                printf("  %d. %s (%s) - %s\n",
+                       i + 1,
+                       pkg->file_path,
                        pkg->language,
                        pkg->is_loaded ? "✅ Actif" : "❌ Inactif");
             }
@@ -1148,8 +1847,8 @@ int interpret_line(char* line) {
 int main(int argc, char* argv[]) {
     srand(time(NULL)); // Initialiser le générateur aléatoire
 
-    printf("🐝 BzzBee Interpreter v4.0 - Le langage des abeilles avec packages! 🐝\n");
-    printf("Nouvelles fonctionnalités: Système de packages multi-langages!\n");
+    printf("🐝 BzzBee Interpreter v4.0 - Le langage des abeilles avec packages et histoires interactives! 🐝\n");
+    printf("Nouvelles fonctionnalités: Structures de données avancées, gestion de fichiers, histoires interactives et plus!\n");
     printf("Langages supportés: node.js, Python, Julia, Ruby, C, BzzBee\n");
     printf("Utilisez 'bzzbee run fichier.bzz' pour exécuter un fichier\n");
     printf("Créez des packages avec: bzz PACKAGE langage -> fichier\n");
@@ -1173,7 +1872,7 @@ int main(int argc, char* argv[]) {
 
         current_line = 0;
         while (current_line < total_lines) {
-            if (!skip_until_end || strncmp(program_lines[current_line], "bzz FIN", 7) == 0 || 
+            if (!skip_until_end || strncmp(program_lines[current_line], "bzz FIN", 7) == 0 ||
                 strncmp(program_lines[current_line], "bzz SINON", 9) == 0) {
                 int result = interpret_line(program_lines[current_line]);
                 if (result == -1) break;

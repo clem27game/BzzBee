@@ -1,0 +1,149 @@
+
+# Programme d'exemple BzzBee v5.0 - Édition Ultra Avancée!
+# Démonstration de toutes les nouvelles fonctionnalités
+
+bzz BONJOUR
+bzz BANNIERE "BZZBEE 5.0 - LANGAGE GÉNÉRALISTE"
+
+# Test des nouvelles structures de données - LISTES
+bzz TITRE "Gestion des Listes Avancées"
+bzz LISTE AJOUTER ma_liste "pomme"
+bzz LISTE AJOUTER ma_liste "banane"
+bzz LISTE AJOUTER ma_liste "orange"
+bzz LISTE AJOUTER ma_liste "abricot"
+bzz LISTE AFFICHER ma_liste
+bzz LISTE TAILLE ma_liste
+bzz LISTE TRIER ma_liste
+bzz LISTE AFFICHER ma_liste
+bzz LISTE RETIRER ma_liste "banane"
+bzz LISTE AFFICHER ma_liste
+
+bzz SEPARATEUR
+
+# Test des dictionnaires (NECTAR)
+bzz TITRE "Système de Nectar (Dictionnaires)"
+bzz NECTAR AJOUTER config "nom" "BzzBee"
+bzz NECTAR AJOUTER config "version" "5.0"
+bzz NECTAR AJOUTER config "auteur" "Équipe Abeilles"
+bzz NECTAR AJOUTER config "langage" "Généraliste"
+bzz NECTAR AFFICHER config
+bzz NECTAR LIRE config "nom"
+bzz NECTAR LIRE config "version"
+
+bzz SEPARATEUR
+
+# Test des opérations sur fichiers
+bzz TITRE "Gestion des Fichiers"
+bzz FICHIER ÉCRIRE "test_bzzbee.txt" "Bonjour from BzzBee!"
+bzz FICHIER EXISTE "test_bzzbee.txt"
+bzz FICHIER LIRE "test_bzzbee.txt"
+
+bzz SEPARATEUR
+
+# Test des entrées utilisateur avancées
+bzz TITRE "Entrées Utilisateur Avancées"
+bzz R couleur cyan -> "Démonstration des entrées (simulation)"
+bzz R console -> "bzz RUCHE LIRE NOMBRE : Entrer un nombre"
+bzz R console -> "bzz RUCHE LIRE OUI_NON : Répondre oui/non"
+bzz R console -> "bzz RUCHE LIRE CARACTERE : Appuyer sur une touche"
+
+bzz SEPARATEUR
+
+# Test des fonctionnalités temporelles étendues
+bzz TITRE "Fonctionnalités Temporelles"
+bzz TEMPS
+bzz TEMPS HEURE_ACTUELLE
+bzz TEMPS DATE_ACTUELLE
+
+bzz SEPARATEUR
+
+# Test des nouvelles fonctionnalités console/ASCII art
+bzz TITRE "Console et Art ASCII Avancés"
+
+bzz CADRE "Message Important!"
+bzz ENCADRER "BzzBee est Génial"
+
+bzz R couleur jaune -> "Démonstration des barres de progression:"
+bzz BARRE_PROGRESSION 25 100 40
+bzz BARRE_PROGRESSION 50 100 40  
+bzz BARRE_PROGRESSION 75 100 40
+bzz BARRE_PROGRESSION 100 100 40
+
+bzz SEPARATEUR
+
+# Test des animations et effets visuels
+bzz TITRE "Animations et Effets Visuels"
+bzz FLASH "ALERTE IMPORTANTE!"
+bzz GRADIENT "Texte Coloré Arc-en-ciel"
+
+bzz R couleur magenta -> "Scènes thématiques:"
+bzz JARDIN
+bzz SEPARATEUR
+bzz OCEAN  
+bzz SEPARATEUR
+bzz FORET
+bzz SEPARATEUR
+bzz CONSTELLATION
+bzz SEPARATEUR
+bzz CHATEAU
+bzz SEPARATEUR
+bzz LABORATOIRE
+bzz SEPARATEUR
+bzz VAISSEAU
+bzz SEPARATEUR
+bzz MONTAGNE
+bzz SEPARATEUR
+bzz CITE_FUTUR
+bzz SEPARATEUR
+bzz PIRATES
+bzz SEPARATEUR
+bzz MAGIE
+bzz SEPARATEUR
+bzz FESTIVAL
+
+bzz SEPARATEUR
+
+# Test de la gestion d'erreurs
+bzz TITRE "Gestion d'Erreurs"
+bzz ESSAI
+bzz R console -> "Tentative d'opération..."
+bzz FICHIER LIRE "fichier_inexistant.txt"
+bzz CAPTURE
+bzz R couleur rouge -> "Erreur capturée avec succès!"
+bzz FIN_ESSAI
+
+bzz SEPARATEUR
+
+# Test des sons ASCII
+bzz TITRE "Effets Sonores ASCII"
+bzz SON "explosion"
+bzz SON "applaudissement"
+bzz SON "vent"
+
+bzz SEPARATEUR
+
+# Combinaison avec les packages
+bzz TITRE "Intégration avec les Packages"
+bzz PACKAGE js -> math_package.js
+pollen -> addition 100 200 : miel
+pollen -> multiplication 15 8 : miel
+
+bzz SEPARATEUR
+
+# Démonstration finale
+bzz BANNIERE "BZZBEE 5.0 - TESTS TERMINÉS"
+bzz R couleur vert -> "🐝 Toutes les nouvelles fonctionnalités ont été testées!"
+bzz R couleur cyan -> "✅ Listes et tableaux avancés"
+bzz R couleur cyan -> "✅ Dictionnaires (Nectar)"  
+bzz R couleur cyan -> "✅ Gestion de fichiers"
+bzz R couleur cyan -> "✅ Entrées utilisateur typées"
+bzz R couleur cyan -> "✅ Fonctions temporelles"
+bzz R couleur cyan -> "✅ Console et ASCII art étendus"
+bzz R couleur cyan -> "✅ Animations et effets"
+bzz R couleur cyan -> "✅ Gestion d'erreurs"
+bzz R couleur cyan -> "✅ Intégration packages"
+
+bzz GALAXIE
+bzz R couleur jaune -> "BzzBee est maintenant un langage de programmation généraliste complet! 🚀🐝"
+
+bzz AU REVOIR

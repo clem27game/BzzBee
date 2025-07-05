@@ -1,27 +1,150 @@
+
 # BzzBee - Le Langage des Abeilles 🐝
 
    ![BzzBee](http://www.image-heberg.fr/files/17510255233353626735.png)
 
-BzzBee est un langage de programmation simple et amusant inspiré de la communication des abeilles! Cette version 4.0 introduit un système révolutionnaire de packages multi-langages!
+BzzBee est un langage de programmation généraliste simple, amusant et puissant inspiré de la communication des abeilles! Cette version 5.0 introduit des fonctionnalités avancées pour en faire un véritable langage généraliste!
+
+## 🚀 Nouvelles Fonctionnalités v5.0
+
+✅ **Structures de données avancées** - Listes et dictionnaires natifs  
+✅ **Gestion de fichiers** - Lecture/écriture native  
+✅ **Entrées utilisateur typées** - Lecture spécialisée  
+✅ **Fonctions temporelles étendues** - Date et heure  
+✅ **Console et ASCII art avancés** - 20+ nouvelles fonctionnalités visuelles  
+✅ **Gestion d'erreurs** - Blocs ESSAI/CAPTURE  
+✅ **Animations et effets** - Contenu interactif  
+✅ **Système de packages** multi-langages  
 
 ## Installation et Utilisation
 
 ```bash
+# Compiler BzzBee
+make
+
 # Exécuter un fichier .bzz
-./BzzBee/main run fichier.bzz
+./main run fichier.bzz
 
 # Mode interactif
-./BzzBee/main
+./main
+
+# Tester les nouvelles fonctionnalités
+./main run exemple_avance.bzz
 ```
 
-## 🚀 NOUVEAU! Système de Packages v4.0
+## 📊 Gestion des Structures de Données
 
-✅ **Packages multi-langages** - Créez des packages en Node.js, Python, Julia, Ruby, C ou BzzBee natif  
-✅ **Convention universelle** - Toutes les fonctions utilisent le format `pollen -> paramètres : miel`  
-✅ **Intégration transparente** - Combinez packages externes avec fonctionnalités natives  
-✅ **Écosystème extensible** - Partagez et réutilisez du code facilement  
+### Listes Avancées
+```bzz
+# Créer et manipuler des listes
+bzz LISTE AJOUTER ma_liste "élément1"
+bzz LISTE AJOUTER ma_liste "élément2"
+bzz LISTE AFFICHER ma_liste
+bzz LISTE TAILLE ma_liste
+bzz LISTE TRIER ma_liste
+bzz LISTE RETIRER ma_liste "élément1"
+```
 
-## 📦 Création de Packages
+### Dictionnaires (NECTAR)
+```bzz
+# Système clé-valeur pour données complexes
+bzz NECTAR AJOUTER config "nom" "BzzBee"
+bzz NECTAR AJOUTER config "version" "5.0"
+bzz NECTAR LIRE config "nom"
+bzz NECTAR AFFICHER config
+bzz NECTAR SUPPRIMER config "version"
+```
+
+## 📁 Gestion de Fichiers Native
+
+```bzz
+# Opérations sur fichiers
+bzz FICHIER ÉCRIRE "data.txt" "Contenu du fichier"
+bzz FICHIER LIRE "data.txt"
+bzz FICHIER EXISTE "data.txt"
+bzz FICHIER SUPPRIMER "data.txt"
+```
+
+## 🎯 Entrées Utilisateur Avancées
+
+```bzz
+# Lectures typées et spécialisées
+bzz RUCHE LIRE NOMBRE        # Lecture de nombre
+bzz RUCHE LIRE OUI_NON       # Confirmation oui/non
+bzz RUCHE LIRE CARACTERE     # Lecture d'un caractère
+```
+
+## ⏰ Fonctions Temporelles
+
+```bzz
+# Gestion du temps
+bzz TEMPS                    # Temps complet
+bzz TEMPS HEURE_ACTUELLE     # Heure actuelle
+bzz TEMPS DATE_ACTUELLE      # Date actuelle
+```
+
+## 🎨 Console et ASCII Art Avancés
+
+### Positionnement et Effets
+```bzz
+bzz CURSEUR 10 5            # Positionner le curseur
+bzz CONSOLE EFFACER         # Effacer l'écran
+bzz FLASH "Message important!" # Effet clignotant
+bzz GRADIENT "Texte coloré"    # Texte arc-en-ciel
+```
+
+### Éléments Visuels
+```bzz
+bzz CADRE "Message"         # Encadrer du texte
+bzz BANNIERE "Titre"        # Bannière décorative  
+bzz SEPARATEUR              # Ligne de séparation
+bzz TITRE "Section"         # Titre avec soulignement
+bzz ENCADRER "Texte"        # Encadrement simple
+```
+
+### Barres de Progression
+```bzz
+bzz BARRE_PROGRESSION 75 100 40   # current total width
+```
+
+### Scènes Thématiques (20+ nouvelles!)
+```bzz
+bzz JARDIN          # Scène de jardin avec fleurs
+bzz OCEAN           # Scène océanique  
+bzz FORET           # Forêt avec animaux
+bzz CONSTELLATION   # Étoiles dispersées
+bzz GALAXIE         # Formation galactique
+bzz CHATEAU         # Château fantastique
+bzz LABORATOIRE     # Laboratoire scientifique
+bzz VAISSEAU        # Vaisseau spatial
+bzz MONTAGNE        # Paysage montagneux
+bzz CITE_FUTUR      # Ville futuriste
+bzz PIRATES         # Thème pirate
+bzz MAGIE           # Éléments magiques
+bzz FESTIVAL        # Ambiance festive
+```
+
+### Animations et Effets Sonores
+```bzz
+bzz ANIMATION "pluie"        # Animation de pluie
+bzz ANIMATION "feu"          # Animation de feu
+bzz SON "explosion"          # Effet sonore explosion
+bzz SON "applaudissement"    # Applaudissements
+bzz SON "vent"              # Bruit de vent
+```
+
+## 🛡️ Gestion d'Erreurs
+
+```bzz
+bzz ESSAI
+    bzz FICHIER LIRE "fichier_inexistant.txt"
+    bzz CALCUL 10 / 0
+bzz CAPTURE
+    bzz R couleur rouge -> "Erreur détectée et gérée!"
+bzz FIN_ESSAI
+```
+
+## 📦 Système de Packages Multi-Langages
 
 ### Langages Supportés
 - **Node.js** (`js`) - JavaScript côté serveur
@@ -31,165 +154,201 @@ BzzBee est un langage de programmation simple et amusant inspiré de la communic
 - **C** (`c`/`C`) - Performance et contrôle système
 - **BzzBee** (`bzz`) - Packages natifs en BzzBee
 
-### Syntaxe de Chargement et d'Utilisation
+### Syntaxe de Packages
 
 ```bzz
-# Charger un package (optionnel avec la syntaxe étendue)
+# Chargement de packages
 bzz PACKAGE js -> math_package.js
 bzz PACKAGE py -> string_package.py  
 bzz PACKAGE jl -> science_package.jl
-bzz PACKAGE rub -> utils_package.rb
-bzz PACKAGE C -> system_package.c
-bzz PACKAGE bzz -> art_package.bzz
 
-# Syntaxe 1: Utiliser tous les packages chargés
+# Utilisation - Syntaxe classique
 pollen -> addition 10 5 : miel
 pollen -> majuscule "hello world" : miel
-pollen -> fibonacci 10 : miel
 
-# Syntaxe 2: Spécifier le langage et fichier explicitement
-pollen -> addition 10 5 : miel [js math_package.js]
-pollen -> majuscule "hello world" : miel [py string_package.py]
-pollen -> fibonacci 10 : miel [rb utils_package.rb]
-pollen -> pi : miel [jl science_package.jl]
-pollen -> puissance 2 8 : miel [c test_package.c]
-```
-
-## 🍯 Convention des Fonctions
-
-Toutes les fonctions de packages doivent respecter le format :
-```bzz
-pollen -> paramètres_de_la_fonction : miel
-```
-
-**Exemples :**
-```bzz
-# Syntaxe classique (recherche dans tous les packages)
-pollen -> addition 15 25 : miel
-pollen -> inverse "BzzBee" : miel  
-pollen -> couleur rouge "Texte coloré" : miel
-pollen -> fibonacci 8 : miel
-
-# Syntaxe étendue (langage et fichier spécifiques)
+# Utilisation - Syntaxe étendue (spécifique)
 pollen -> multiplication 8 7 : miel [js math_package.js]
 pollen -> voyelles "BzzBee" : miel [py string_package.py]
-pollen -> hasard 1 100 : miel [rb utils_package.rb] 
-pollen -> sqrt 64 : miel [jl science_package.jl]
-pollen -> binaire 42 : miel [c test_package.c]
+pollen -> fibonacci 10 : miel [rb utils_package.rb]
 ```
 
-## 📝 Exemples de Packages
+## 🆕 Fonctionnalités Natives Complètes
 
-### Package Math (Node.js)
-```javascript
-// math_package.js
-const args = process.argv.slice(2);
-const operation = args[0];
-const a = parseFloat(args[1]) || 0;
-const b = parseFloat(args[2]) || 0;
-
-switch(operation) {
-    case 'addition':
-        console.log(`🍯 Résultat: ${a} + ${b} = ${a + b}`);
-        break;
-    case 'multiplication':
-        console.log(`🍯 Résultat: ${a} * ${b} = ${a * b}`);
-        break;
-    // ... autres opérations
-}
-```
-
-### Package String (Python)
-```python
-# string_package.py
-import sys
-
-def process_string(operation, text=""):
-    if operation == "majuscule":
-        return f"🍯 Résultat: {text.upper()}"
-    elif operation == "inverse":
-        return f"🍯 Résultat: {text[::-1]}"
-    # ... autres opérations
-
-if __name__ == "__main__":
-    operation = sys.argv[1] if len(sys.argv) > 1 else ""
-    text = sys.argv[2] if len(sys.argv) > 2 else ""
-    print(process_string(operation, text))
-```
-
-### Package Native (BzzBee)
+### Mathématiques
 ```bzz
-# art_package.bzz
-bzz R couleur cyan -> "🎨 Package Art BzzBee"
-bzz TOILE INIT
-bzz LIGNE 5 5 25 5 =
-bzz TEXTE 8 10 "BZZBEE ART"
-bzz TOILE MONTRE
-bzz DESSINE abeille
+bzz CALCUL 15 + 25              # Calculs de base
+bzz CALCUL sin(45)              # Fonctions trigonométriques
+bzz CALCUL sqrt(16)             # Racine carrée
+bzz CALCUL 2 ^ 8                # Puissances
 ```
 
-## 🎯 Exemple Complet d'Utilisation
+### Variables et Stockage
+```bzz
+bzz STOCK nombre -> 42          # Stocker une valeur
+bzz MONTRE nombre               # Afficher une variable
+```
+
+### Tableaux Simples
+```bzz
+bzz TABLEAU notes -> "15,18,12,16"
+bzz MONTRE notes
+```
+
+### Contrôle de Flux
+```bzz
+bzz SI nombre > 10 ALORS
+    bzz R console -> "Grand nombre!"
+bzz SINON  
+    bzz R console -> "Petit nombre!"
+bzz FIN
+
+bzz POUR i DE 1 A 5
+    bzz MONTRE i
+bzz SUIVANT
+```
+
+### Interactivité
+```bzz
+bzz QUIZ "2+2=?" -> "4"         # Question-réponse
+bzz LIRE nom                    # Lecture simple
+```
+
+### Génération Aléatoire
+```bzz
+bzz HASARD 1 100                # Nombre aléatoire
+```
+
+### Canvas et Dessin
+```bzz
+bzz TOILE INIT                  # Initialiser canvas
+bzz PIXEL 5 5 *                 # Dessiner pixel
+bzz LIGNE 0 0 10 10 -          # Dessiner ligne
+bzz TEXTE 2 2 "Hello"          # Écrire texte
+bzz TOILE MONTRE               # Afficher canvas
+```
+
+### Formes ASCII Intégrées
+```bzz
+bzz DESSINE soleil              # Soleil ASCII
+bzz DESSINE nuage               # Nuage ASCII
+bzz DESSINE coeur               # Cœur ASCII
+bzz DESSINE abeille             # Abeille ASCII
+bzz DESSINE fleur               # Fleur ASCII
+bzz DESSINE ruche               # Ruche ASCII
+```
+
+### Musique
+```bzz
+bzz MUSIQUE do 500              # Jouer note
+bzz MUSIQUE re 300              # Durée en ms
+```
+
+### Affichage Coloré
+```bzz
+bzz R couleur rouge -> "Texte rouge"
+bzz R couleur vert -> "Texte vert"
+bzz R couleur bleu -> "Texte bleu"
+bzz R couleur jaune -> "Texte jaune"
+bzz R couleur cyan -> "Texte cyan"
+bzz R couleur magenta -> "Texte magenta"
+bzz R console -> "Texte normal"
+```
+
+## 🎯 Exemple Complet d'Application
 
 ```bzz
-# exemple_packages.bzz
+# Application complète de gestion de données
 bzz BONJOUR
-bzz R couleur jaune -> "=== SYSTÈME DE PACKAGES BZZBEE ==="
+bzz BANNIERE "GESTIONNAIRE DE TÂCHES BZZBEE"
 
-# Chargement des packages
+# Configuration avec dictionnaire
+bzz NECTAR AJOUTER config "nom_app" "TaskBee"
+bzz NECTAR AJOUTER config "version" "1.0"
+
+# Liste de tâches
+bzz LISTE AJOUTER taches "Apprendre BzzBee"
+bzz LISTE AJOUTER taches "Créer un projet"
+bzz LISTE AJOUTER taches "Partager avec la communauté"
+
+# Affichage
+bzz TITRE "Configuration"
+bzz NECTAR AFFICHER config
+
+bzz TITRE "Mes Tâches"
+bzz LISTE AFFICHER taches
+bzz LISTE TAILLE taches
+
+# Sauvegarde
+bzz FICHIER ÉCRIRE "taches.txt" "Tâches sauvegardées"
+
+# Intégration avec packages externes
 bzz PACKAGE js -> math_package.js
-bzz PACKAGE py -> string_package.py
-bzz PACKAGE rub -> utils_package.rb
+pollen -> addition 100 50 : miel
 
-# Utilisation des packages
-pollen -> addition 10 5 : miel          # Package Node.js
-pollen -> majuscule "bzzbee" : miel     # Package Python
-pollen -> date : miel                   # Package Ruby
+# Effets visuels
+bzz BARRE_PROGRESSION 100 100 30
+bzz FESTIVAL
 
-# Combinaison avec BzzBee natif
-bzz CALCUL 15 + 25                      # Fonction native
-bzz DESSINE abeille                     # Fonction native
-bzz R couleur vert -> "Parfait!"        # Fonction native
-
+bzz R couleur vert -> "Application terminée avec succès!"
 bzz AU REVOIR
 ```
 
-## 🆕 Fonctionnalités v4.0
+## 🌟 Avantages de BzzBee v5.0
 
-- **🎨 Canvas graphique** pour créer des dessins ASCII
-- **🎵 Système musical** avec support des notes
-- **📊 Tableaux** pour manipuler des listes de données
-- **🔢 Fonctions mathématiques** avancées (trigonométrie)
-- **🎲 Générateur aléatoire** pour les jeux
-- **📦 NOUVEAU! Système de packages** multi-langages
-- **🔗 NOUVEAU! Convention universelle** pollen/miel
-- **🚀 NOUVEAU! Écosystème extensible** pour développeurs
+- **Langage Généraliste** : Capable de gérer des projets variés
+- **Structures de Données** : Listes et dictionnaires natifs
+- **Manipulation de Fichiers** : I/O intégré 
+- **Gestion d'Erreurs** : Programmes robustes
+- **Polyvalence** : Packages multi-langages
+- **Créativité** : ASCII art et animations étendues
+- **Simplicité** : Syntaxe claire inspirée des abeilles
+- **Extensibilité** : Écosystème de packages
+- **Interactivité** : Entrées utilisateur avancées
 
-## 🛠️ Guide de Développement de Packages
+## 🛠️ Applications Possibles
 
-### 1. Créer le fichier source
-Écrivez votre code dans le langage de votre choix parmi ceux supportés.
+Avec BzzBee v5.0, vous pouvez créer :
 
-### 2. Respecter la convention
-Vos fonctions doivent accepter des paramètres et répondre au format pollen/miel.
+- **Applications Web** (avec packages Node.js)
+- **Scripts d'automatisation** (gestion de fichiers)
+- **Jeux textuels** (entrées utilisateur + ASCII art)
+- **Outils de données** (listes + dictionnaires)
+- **Applications scientifiques** (packages Julia/Python)
+- **Utilitaires système** (packages C)
+- **Interfaces console** (positionnement + effets visuels)
+- **Contenu interactif** (animations + sons)
 
-### 3. Tester l'intégration
+## 📚 Guide de Développement
+
+### 1. Projet Simple
 ```bzz
-bzz PACKAGE votre_langage -> votre_fichier.ext
-pollen -> test_function param1 param2 : miel
+# Calculatrice interactive
+bzz BANNIERE "CALCULATRICE BZZBEE"
+bzz RUCHE LIRE NOMBRE 
+pollen -> addition 10 20 : miel [js math_package.js]
+bzz BARRE_PROGRESSION 100 100 40
 ```
 
-### 4. Partager avec la communauté
-Les packages peuvent être facilement partagés et réutilisés!
+### 2. Gestion de Données
+```bzz
+# Base de données simple
+bzz NECTAR AJOUTER users "alice" "admin"
+bzz NECTAR AJOUTER users "bob" "user"
+bzz LISTE AJOUTER logs "login alice"
+bzz FICHIER ÉCRIRE "backup.txt" "Données sauvegardées"
+```
 
-## 🌟 Avantages du Système de Packages
+### 3. Interface Visuelle
+```bzz
+# Menu interactif
+bzz CONSOLE EFFACER
+bzz CADRE "MENU PRINCIPAL"
+bzz CURSEUR 5 10
+bzz GRADIENT "Options disponibles"
+bzz SEPARATEUR
+```
 
-- **Polyvalence** : Utilisez la puissance de plusieurs langages
-- **Réutilisabilité** : Partagez et réutilisez du code facilement
-- **Performance** : Choisissez le meilleur langage pour chaque tâche
-- **Communauté** : Construisez un écosystème riche et collaboratif
-- **Simplicité** : Convention claire et uniforme
-
-Bzzzz! Explorez toutes les possibilités créatives de BzzBee v4.0 et son système de packages révolutionnaire! 🐝📦🎨🎵✨
+Bzzzz! Explorez toutes les possibilités créatives de BzzBee v5.0 - maintenant un véritable langage de programmation généraliste! 🐝🚀📊🎨✨
 
 ---
 *Créé avec 💛 pour la communauté des développeurs créatifs!*
